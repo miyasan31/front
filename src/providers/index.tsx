@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from "react";
 
 import { ErrorBoundaryProvider } from "~/providers/error-boundary";
+import { MantineProvider } from "~/providers/mantine";
 import { ReactHelmetProvider } from "~/providers/react-helmet";
 import { ReactQueryProvider } from "~/providers/react-query";
 import { ReactRouterProvider } from "~/providers/react-router";
@@ -16,9 +17,11 @@ export const AppProvider: FC<Props> = ({ children }) => {
       <SuspenseProvider>
         <ReactHelmetProvider>
           <ReactQueryProvider>
-            <ReactRouterProvider>
-              <>{children}</>
-            </ReactRouterProvider>
+            <MantineProvider>
+              <ReactRouterProvider>
+                <>{children}</>
+              </ReactRouterProvider>
+            </MantineProvider>
           </ReactQueryProvider>
         </ReactHelmetProvider>
       </SuspenseProvider>
