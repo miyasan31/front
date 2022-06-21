@@ -1,4 +1,4 @@
-import { Avatar, createStyles, Group, MediaQuery, Navbar, Tooltip, UnstyledButton } from "@mantine/core";
+import { Avatar, createStyles, Group, Navbar, Tooltip, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import type { FC } from "react";
 import { BrandNotion, Home, Messages, MoonStars, Search, Settings, Sun } from "tabler-icons-react";
@@ -11,19 +11,19 @@ const navigationTop = [
   {
     id: "home",
     path: "/",
-    label: "Home",
+    label: "ホーム",
     Icon: Home,
   },
   {
-    id: "about",
-    path: "/about",
-    label: "About",
+    id: "timeline",
+    path: "/",
+    label: "タイムライン",
     Icon: Messages,
   },
   {
-    id: "nest-one",
-    path: "/nest-one",
-    label: "Nest One",
+    id: "search",
+    path: "/search",
+    label: "検索する",
     Icon: Search,
   },
 ];
@@ -105,6 +105,10 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     linkLabel: params?.collapsed ? { display: "none" } : {},
 
     avatar: {
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      columnGap: theme.spacing.sm,
       marginTop: theme.spacing.sm,
       marginLeft: 5,
     },
@@ -126,7 +130,7 @@ export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ 
         <Group className={classes.header} position="apart">
           <Link to="/" className={classes.logo}>
             <BrandNotion />
-            <span className={classes.linkLabel}>Admin Dashboard</span>
+            <span className={classes.linkLabel}>TaskHub</span>
           </Link>
         </Group>
 
@@ -145,31 +149,34 @@ export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ 
         ))}
       </Navbar.Section>
 
-      <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-        <Navbar.Section className={classes.footer}>
-          <Tooltip label="設定" position="right" withArrow sx={{ width: "100%" }}>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) => {
-                return cx(classes.link, isActive ? classes.linkActive : null);
-              }}
-            >
-              <Settings className={classes.linkIcon} />
-            </NavLink>
-          </Tooltip>
+      <Navbar.Section className={classes.footer}>
+        <Tooltip label="設定" position="right" withArrow sx={{ width: "100%" }}>
+          <NavLink
+            to="/settings"
+            className={({ isActive }) => {
+              return cx(classes.link, isActive ? classes.linkActive : null);
+            }}
+          >
+            <Settings className={classes.linkIcon} />
+            <span className={classes.linkLabel}>設定</span>
+          </NavLink>
+        </Tooltip>
 
+        <Tooltip label="テーマ切り替え" position="right" withArrow sx={{ width: "100%" }}>
           <UnstyledButton className={classes.link} onClick={handleToggleColorScheme}>
             {colorScheme === "dark" ? <MoonStars className={classes.linkIcon} /> : <Sun className={classes.linkIcon} />}
+            <span className={classes.linkLabel}>テーマ切り替え</span>
           </UnstyledButton>
+        </Tooltip>
 
-          <UnstyledButton className={classes.avatar}>
-            <Avatar
-              src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
-              size="md"
-            />
-          </UnstyledButton>
-        </Navbar.Section>
-      </MediaQuery>
+        <UnstyledButton className={classes.avatar}>
+          <Avatar
+            src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
+            size="md"
+          />
+          <span className={classes.linkLabel}>みやさん</span>
+        </UnstyledButton>
+      </Navbar.Section>
     </Navbar>
   );
 };
