@@ -28,7 +28,7 @@ export const DrawerNav: FC<{ opened: boolean; handleClose: () => void }> = ({ op
           "&:not(:disabled):active": { transform: "none" },
         }}
       />
-      <SideNav />
+      <SideNav initialCollapse={false} />
     </Drawer>
   );
 };

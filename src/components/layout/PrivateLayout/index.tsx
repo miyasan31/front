@@ -5,6 +5,7 @@ import type { FC, ReactNode } from "react";
 import { Menu2 } from "tabler-icons-react";
 
 import { DrawerNav } from "~/components/layout/PrivateLayout/DrawerNav";
+import { SideEditor } from "~/components/layout/PrivateLayout/SideEditor";
 import { SideNav } from "~/components/layout/PrivateLayout/SideNav";
 import { useMediaQuery } from "~/libs/mantine/hooks/useMediaQuery";
 
@@ -14,9 +15,8 @@ type Props = {
 
 export const PrivateLayout: FC<Props> = ({ children }) => {
   const theme = useMantineTheme();
-  const [opened, handlers] = useDisclosure(false);
-
   const largerThanSm = useMediaQuery("sm");
+  const [opened, handlers] = useDisclosure(false);
 
   return (
     <AppShell
@@ -31,11 +31,18 @@ export const PrivateLayout: FC<Props> = ({ children }) => {
       navbar={
         largerThanSm ? (
           <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-            <SideNav />
+            <SideNav initialCollapse={true} />
           </MediaQuery>
         ) : (
           <DrawerNav opened={opened} handleClose={handlers.close} />
         )
+      }
+      aside={
+        largerThanSm ? (
+          <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+            <SideEditor />
+          </MediaQuery>
+        ) : undefined
       }
       header={
         <MediaQuery largerThan="sm" styles={{ display: "none" }}>

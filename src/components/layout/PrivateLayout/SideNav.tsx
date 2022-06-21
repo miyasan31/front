@@ -1,12 +1,13 @@
-import { createStyles, Group, MediaQuery, Navbar, Tooltip, UnstyledButton } from "@mantine/core";
+import { Avatar, createStyles, Group, MediaQuery, Navbar, Tooltip, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import type { FC } from "react";
-import { ArrowLeft, ArrowRight, DeviceAnalytics, Home } from "tabler-icons-react";
+import { BrandNotion, Home, Messages, MoonStars, Search, Settings, Sun } from "tabler-icons-react";
 
 import { Link } from "~/components/lib/Link";
 import { NavLink } from "~/components/lib/NavLink";
+import { useColorScheme } from "~/libs/mantine/hooks/useColorScheme";
 
-const navigationPaths = [
+const navigationTop = [
   {
     id: "home",
     path: "/",
@@ -17,31 +18,13 @@ const navigationPaths = [
     id: "about",
     path: "/about",
     label: "About",
-    Icon: Home,
+    Icon: Messages,
   },
   {
     id: "nest-one",
     path: "/nest-one",
     label: "Nest One",
-    Icon: Home,
-  },
-  {
-    id: "posts",
-    path: "/posts",
-    label: "Post List",
-    Icon: Home,
-  },
-  {
-    id: "nest-posts",
-    path: "/nest-posts",
-    label: "Nest Post List",
-    Icon: Home,
-  },
-  {
-    id: "not-found",
-    path: "/not-found",
-    label: "Not Found",
-    Icon: Home,
+    Icon: Search,
   },
 ];
 
@@ -65,7 +48,6 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     footer: {
       paddingTop: theme.spacing.xs,
       marginTop: theme.spacing.md,
-      borderTop: `1px solid ${theme.colors.gray[2]}`,
     },
 
     logo: {
@@ -121,25 +103,35 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     },
 
     linkLabel: params?.collapsed ? { display: "none" } : {},
+
+    avatar: {
+      marginTop: theme.spacing.sm,
+      marginLeft: 5,
+    },
   };
 });
 
-export const SideNav: FC<{ className?: string }> = ({ className }) => {
-  const [collapsed, handlers] = useDisclosure(false);
+export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ initialCollapse, className }) => {
+  const [collapsed, _handlers] = useDisclosure(initialCollapse);
   const { classes, cx } = useStyles({ collapsed });
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+
+  const handleToggleColorScheme = () => {
+    toggleColorScheme();
+  };
 
   return (
     <Navbar p="md" className={cx(classes.navbar, className)}>
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
           <Link to="/" className={classes.logo}>
-            <DeviceAnalytics />
+            <BrandNotion />
             <span className={classes.linkLabel}>Admin Dashboard</span>
           </Link>
         </Group>
 
-        {navigationPaths.map(({ id, path, label, Icon }) => (
-          <Tooltip key={id} label={label} disabled={!collapsed} position="right" withArrow sx={{ width: "100%" }}>
+        {navigationTop.map(({ id, path, label, Icon }) => (
+          <Tooltip key={id} label={label} position="right" withArrow sx={{ width: "100%" }}>
             <NavLink
               to={path}
               className={({ isActive }) => {
@@ -155,16 +147,26 @@ export const SideNav: FC<{ className?: string }> = ({ className }) => {
 
       <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
         <Navbar.Section className={classes.footer}>
-          {/* eslint-disable-next-line react/jsx-handler-names */}
-          <UnstyledButton className={classes.link} onClick={handlers.toggle}>
-            {collapsed ? (
-              <ArrowRight className={classes.linkIcon} />
-            ) : (
-              <>
-                <ArrowLeft className={classes.linkIcon} />
-                <span>折りたたむ</span>
-              </>
-            )}
+          <Tooltip label="設定" position="right" withArrow sx={{ width: "100%" }}>
+            <NavLink
+              to="/settings"
+              className={({ isActive }) => {
+                return cx(classes.link, isActive ? classes.linkActive : null);
+              }}
+            >
+              <Settings className={classes.linkIcon} />
+            </NavLink>
+          </Tooltip>
+
+          <UnstyledButton className={classes.link} onClick={handleToggleColorScheme}>
+            {colorScheme === "dark" ? <MoonStars className={classes.linkIcon} /> : <Sun className={classes.linkIcon} />}
+          </UnstyledButton>
+
+          <UnstyledButton className={classes.avatar}>
+            <Avatar
+              src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
+              size="md"
+            />
           </UnstyledButton>
         </Navbar.Section>
       </MediaQuery>
