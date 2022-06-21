@@ -1,10 +1,12 @@
-import { AppShell, useMantineTheme } from "@mantine/core";
+/* eslint-disable react/jsx-handler-names */
+import { ActionIcon, AppShell, MediaQuery, useMantineTheme } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import type { FC, ReactNode } from "react";
-import { useCallback, useState } from "react";
+import { Menu2 } from "tabler-icons-react";
 
-import { Aside } from "~/components/layout/PrivateLayout/Aside";
-import { Header } from "~/components/layout/PrivateLayout/Header";
-import { Navbar } from "~/components/layout/PrivateLayout/Navbar";
+import { DrawerNav } from "~/components/layout/PrivateLayout/DrawerNav";
+import { SideNav } from "~/components/layout/PrivateLayout/SideNav";
+import { useMediaQuery } from "~/libs/mantine/hooks/useMediaQuery";
 
 type Props = {
   children: ReactNode;
@@ -12,25 +14,36 @@ type Props = {
 
 export const PrivateLayout: FC<Props> = ({ children }) => {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
+  const [opened, handlers] = useDisclosure(false);
 
-  const handleNavbarToggle = useCallback(() => {
-    setOpened((prev) => !prev);
-  }, []);
+  const largerThanSm = useMediaQuery("sm");
 
   return (
     <AppShell
+      fixed
+      navbarOffsetBreakpoint="sm"
+      asideOffsetBreakpoint="sm"
       styles={{
         main: {
           background: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
         },
       }}
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      fixed
-      navbar={<Navbar opened={opened} />}
-      aside={<Aside />}
-      header={<Header opened={opened} onToggle={handleNavbarToggle} />}
+      navbar={
+        largerThanSm ? (
+          <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+            <SideNav />
+          </MediaQuery>
+        ) : (
+          <DrawerNav opened={opened} handleClose={handlers.close} />
+        )
+      }
+      header={
+        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+          <ActionIcon variant="hover" radius="xl" size={40} onClick={handlers.open}>
+            <Menu2 />
+          </ActionIcon>
+        </MediaQuery>
+      }
     >
       {children}
     </AppShell>
