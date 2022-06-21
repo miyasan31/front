@@ -2,7 +2,6 @@ import { lazy } from "react";
 
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import { FetchProvider } from "~/components/provider/Fetch";
-import { nestOneRoutes } from "~/routes/private/nest-one";
 import { nestPostsRoutes } from "~/routes/public/nest-posts";
 
 const AboutPage = lazy(() => import("~/components/page/public/about.page"));
@@ -35,7 +34,6 @@ export const publicRoutes = [
       {
         path: "nest-one",
         element: <NestOnePage />,
-        children: [...nestOneRoutes],
       },
       {
         path: "nest-posts",

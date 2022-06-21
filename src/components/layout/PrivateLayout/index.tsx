@@ -31,7 +31,7 @@ export const PrivateLayout: FC<Props> = ({ children }) => {
       navbar={
         largerThanSm ? (
           <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-            <SideNav initialCollapse={true} />
+            <SideNav type="nav" />
           </MediaQuery>
         ) : (
           <DrawerNav opened={opened} handleClose={handlers.close} />

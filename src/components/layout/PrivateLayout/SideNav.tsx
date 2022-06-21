@@ -16,7 +16,7 @@ const navigationTop = [
   },
   {
     id: "timeline",
-    path: "/",
+    path: "/timeline",
     label: "タイムライン",
     Icon: Messages,
   },
@@ -28,7 +28,7 @@ const navigationTop = [
   },
 ];
 
-const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, getRef) => {
+const useStyles = createStyles<string, { collapsed?: boolean; type: "drawer" | "nav" }>((theme, params, getRef) => {
   const icon: string = getRef("icon");
 
   return {
@@ -48,6 +48,7 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
     footer: {
       paddingTop: theme.spacing.xs,
       marginTop: theme.spacing.md,
+      marginBottom: params.type === "drawer" ? theme.spacing.sm : 0,
     },
 
     logo: {
@@ -115,17 +116,17 @@ const useStyles = createStyles<string, { collapsed?: boolean }>((theme, params, 
   };
 });
 
-export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ initialCollapse, className }) => {
-  const [collapsed, _handlers] = useDisclosure(initialCollapse);
-  const { classes, cx } = useStyles({ collapsed });
+export const SideNav: FC<{ type: "drawer" | "nav" }> = ({ type }) => {
   const { colorScheme, toggleColorScheme } = useColorScheme();
+  const [collapsed, _handlers] = useDisclosure(type === "nav");
+  const { classes, cx } = useStyles({ collapsed, type });
 
   const handleToggleColorScheme = () => {
     toggleColorScheme();
   };
 
   return (
-    <Navbar p="md" className={cx(classes.navbar, className)}>
+    <Navbar p="md" className={cx(classes.navbar)}>
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
           <Link to="/" className={classes.logo}>
@@ -152,7 +153,7 @@ export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ 
       <Navbar.Section className={classes.footer}>
         <Tooltip label="設定" position="right" disabled={!collapsed} withArrow sx={{ width: "100%" }}>
           <NavLink
-            to="/settings"
+            to="/setting"
             className={({ isActive }) => {
               return cx(classes.link, isActive ? classes.linkActive : null);
             }}
@@ -169,12 +170,19 @@ export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ 
           </UnstyledButton>
         </Tooltip>
 
-        <UnstyledButton className={classes.avatar}>
-          <Avatar
-            src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
-            size="md"
-          />
-          <span className={classes.linkLabel}>みやさん</span>
+        <UnstyledButton>
+          <NavLink
+            to="/account"
+            className={({ isActive }) => {
+              return cx(classes.link, isActive ? classes.linkActive : null);
+            }}
+          >
+            <Avatar
+              src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
+              size="sm"
+            />
+            <span className={classes.linkLabel}>みやさん</span>
+          </NavLink>
         </UnstyledButton>
       </Navbar.Section>
     </Navbar>

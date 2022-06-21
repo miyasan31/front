@@ -1,16 +1,13 @@
 import { lazy } from "react";
 
 import { PrivateLayout } from "~/components/layout/PrivateLayout";
-import MainPage from "~/components/page/private/main.page";
+import HomePage from "~/components/page/private/home.page";
 import { FetchProvider } from "~/components/provider/Fetch";
-import { nestOneRoutes } from "~/routes/private/nest-one";
-import { nestPostsRoutes } from "~/routes/private/nest-posts";
 
-const AboutPage = lazy(() => import("~/components/page/public/about.page"));
-const NestOnePage = lazy(() => import("~/components/page/public/nest-one.page"));
-const NestPostsPage = lazy(() => import("~/components/page/public/nest-posts.page"));
-const PostDetailPage = lazy(() => import("~/components/page/public/post-detail.page"));
-const PostListPage = lazy(() => import("~/components/page/public/posts.page"));
+const TimelinePage = lazy(() => import("~/components/page/private/timeline.page"));
+const SearchPage = lazy(() => import("~/components/page/private/search.page"));
+const SettingPage = lazy(() => import("~/components/page/private/setting.page"));
+const AccountPage = lazy(() => import("~/components/page/private/account.page"));
 
 export const privateRoutes = [
   {
@@ -22,30 +19,24 @@ export const privateRoutes = [
     ),
     children: [
       {
-        path: "main",
-        element: <MainPage />,
+        path: "/",
+        element: <HomePage />,
       },
       {
-        path: "about",
-        element: <AboutPage />,
+        path: "timeline",
+        element: <TimelinePage />,
       },
       {
-        path: "posts",
-        element: <PostListPage />,
+        path: "search",
+        element: <SearchPage />,
       },
       {
-        path: "posts/:postId",
-        element: <PostDetailPage />,
+        path: "setting",
+        element: <SettingPage />,
       },
       {
-        path: "nest-one",
-        element: <NestOnePage />,
-        children: [...nestOneRoutes],
-      },
-      {
-        path: "nest-posts",
-        element: <NestPostsPage />,
-        children: [...nestPostsRoutes],
+        path: "account",
+        element: <AccountPage />,
       },
     ],
   },
