@@ -135,7 +135,7 @@ export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ 
         </Group>
 
         {navigationTop.map(({ id, path, label, Icon }) => (
-          <Tooltip key={id} label={label} position="right" withArrow sx={{ width: "100%" }}>
+          <Tooltip key={id} label={label} position="right" disabled={!collapsed} withArrow sx={{ width: "100%" }}>
             <NavLink
               to={path}
               className={({ isActive }) => {
@@ -150,7 +150,7 @@ export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ 
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <Tooltip label="設定" position="right" withArrow sx={{ width: "100%" }}>
+        <Tooltip label="設定" position="right" disabled={!collapsed} withArrow sx={{ width: "100%" }}>
           <NavLink
             to="/settings"
             className={({ isActive }) => {
@@ -162,7 +162,7 @@ export const SideNav: FC<{ initialCollapse: boolean; className?: string }> = ({ 
           </NavLink>
         </Tooltip>
 
-        <Tooltip label="テーマ切り替え" position="right" withArrow sx={{ width: "100%" }}>
+        <Tooltip label="テーマ切り替え" position="right" disabled={!collapsed} withArrow sx={{ width: "100%" }}>
           <UnstyledButton className={classes.link} onClick={handleToggleColorScheme}>
             {colorScheme === "dark" ? <MoonStars className={classes.linkIcon} /> : <Sun className={classes.linkIcon} />}
             <span className={classes.linkLabel}>テーマ切り替え</span>
