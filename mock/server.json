@@ -1,4 +1,20 @@
 {
+  "users": [
+    {
+      "id": "1",
+      "userName": "みやさん",
+      "email": "miyasan@gmail.com",
+      "profile": "みやさんで〜す！",
+      "avatar": "https://pbs.twimg.com/profile_images/1511856577942552576/ML2kSp4E_400x400.jpg"
+    },
+    {
+      "id": "2",
+      "userName": "みやさん",
+      "email": "miyasan@gmail.com",
+      "profile": "みやさんで〜す！",
+      "avatar": "https://pbs.twimg.com/profile_images/1511856577942552576/ML2kSp4E_400x400.jpg"
+    }
+  ],
   "timeline": [
     {
       "id": "1",
