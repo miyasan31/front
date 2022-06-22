@@ -1,4 +1,5 @@
 import { PublicLayout } from "~/components/layout/PublicLayout";
+import SignInPage from "~/components/page/public/sign-in.page";
 import { FetchProvider } from "~/components/provider/Fetch";
 
 export const publicRoutes = [
@@ -9,6 +10,12 @@ export const publicRoutes = [
         <FetchProvider />
       </PublicLayout>
     ),
+    children: [
+      {
+        path: "/",
+        element: <SignInPage />,
+      },
+    ],
   },
 ];
 
