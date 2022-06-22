@@ -14,20 +14,20 @@ type Props = {
 
 export const AppProvider: FC<Props> = ({ children }) => {
   return (
-    <ErrorBoundaryProvider>
-      <SuspenseProvider>
+    <ReactQueryProvider>
+      <RecoilProvider>
         <ReactHelmetProvider>
-          <ReactQueryProvider>
-            <MantineProvider>
-              <RecoilProvider>
+          <MantineProvider>
+            <ErrorBoundaryProvider>
+              <SuspenseProvider>
                 <ReactRouterProvider>
                   <>{children}</>
                 </ReactRouterProvider>
-              </RecoilProvider>
-            </MantineProvider>
-          </ReactQueryProvider>
+              </SuspenseProvider>
+            </ErrorBoundaryProvider>
+          </MantineProvider>
         </ReactHelmetProvider>
-      </SuspenseProvider>
-    </ErrorBoundaryProvider>
+      </RecoilProvider>
+    </ReactQueryProvider>
   );
 };
