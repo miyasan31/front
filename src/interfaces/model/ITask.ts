@@ -5,6 +5,7 @@ export interface ITask {
   id: string;
   taskName: string;
   description: string;
+  outputMemo: string;
   isDone: boolean;
   likeCount: number;
   userId: IUser["id"];
