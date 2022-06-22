@@ -5,5 +5,5 @@ type LayoutProps = {
 };
 
 export const PublicLayout: FC<LayoutProps> = ({ children }) => {
-  return <main className="h-full min-h-screen bg-slate-900 p-4">{children}</main>;
+  return <main className="h-full min-h-screen p-4">{children}</main>;
 };
