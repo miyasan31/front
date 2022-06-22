@@ -111,7 +111,7 @@ module.exports = {
       },
     },
     {
-      files: ["**/{interfaces,interface*}/**.{ts,tsx}"],
+      files: ["**/interfaces/**/*.ts"],
       rules: {
         "@typescript-eslint/naming-convention": [
           "error",
