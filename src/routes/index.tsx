@@ -1,14 +1,16 @@
 import { useRoutes } from "react-router-dom";
 
-import { useAuth } from "~/libs/hook/useAuth";
 import { commonRoutes } from "~/routes/common";
 import { privateRoutes } from "~/routes/private";
 import { publicRoutes } from "~/routes/public";
+import { authService } from "~/services/auth/authService";
+
+const useAuth = authService.useAuth;
 
 export const AppRoutes = () => {
-  const auth = useAuth();
+  const { isSignIn } = useAuth();
 
-  const routes = auth.isSignIn ? privateRoutes : publicRoutes;
+  const routes = isSignIn ? privateRoutes : publicRoutes;
 
   const element = useRoutes([...routes, ...commonRoutes]);
 
