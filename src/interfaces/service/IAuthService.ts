@@ -1,6 +1,7 @@
 import type { ApiError, Provider, Session, User } from "@supabase/supabase-js";
 
-export interface ISignInStatus {
+export interface ISession {
+  isLoading: boolean;
   isSignIn: boolean;
 }
 
@@ -17,7 +18,7 @@ export interface IUseSignOut {
 }
 
 export interface IAuthService {
-  useAuth: () => ISignInStatus;
+  useAuth: () => ISession;
   googleSignIn: () => Promise<IGoogleSignInResponse>;
   useSignOut: () => IUseSignOut;
 }
