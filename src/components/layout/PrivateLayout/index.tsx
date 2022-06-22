@@ -7,7 +7,7 @@ import { Menu2 } from "tabler-icons-react";
 import { DrawerNav } from "~/components/layout/PrivateLayout/DrawerNav";
 import { SideEditor } from "~/components/layout/PrivateLayout/SideEditor";
 import { SideNav } from "~/components/layout/PrivateLayout/SideNav";
-import { useMediaQuery } from "~/libs/mantine/hooks/useMediaQuery";
+import { useMediaQuery } from "~/libs/mantine/hook/useMediaQuery";
 
 type Props = {
   children: ReactNode;

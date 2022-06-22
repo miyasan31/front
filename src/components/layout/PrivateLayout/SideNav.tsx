@@ -5,7 +5,7 @@ import { BrandNotion, Home, Messages, MoonStars, Search, Settings, Sun } from "t
 
 import { Link } from "~/components/lib/Link";
 import { NavLink } from "~/components/lib/NavLink";
-import { useColorScheme } from "~/libs/mantine/hooks/useColorScheme";
+import { useColorScheme } from "~/libs/mantine/hook/useColorScheme";
 
 const navigationTop = [
   {

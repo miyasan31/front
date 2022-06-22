@@ -3,9 +3,9 @@ import type { FC, ReactNode } from "react";
 
 import { Link } from "~/components/lib/Link";
 import { errorButton, successButton } from "~/constants/buttonColor";
-import { useColorScheme } from "~/libs/mantine/hooks/useColorScheme";
-import { useMediaQuery } from "~/libs/mantine/hooks/useMediaQuery";
-import { useViewportSize } from "~/libs/mantine/hooks/useViewportSize";
+import { useColorScheme } from "~/libs/mantine/hook/useColorScheme";
+import { useMediaQuery } from "~/libs/mantine/hook/useMediaQuery";
+import { useViewportSize } from "~/libs/mantine/hook/useViewportSize";
 
 type LayoutProps = {
   children: ReactNode;

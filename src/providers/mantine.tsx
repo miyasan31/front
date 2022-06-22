@@ -4,7 +4,7 @@ import {
 } from "@mantine/core";
 import type { FC, ReactNode } from "react";
 
-import { useColorScheme } from "~/libs/mantine/hooks/useColorScheme";
+import { useColorScheme } from "~/libs/mantine/hook/useColorScheme";
 import { customTheme } from "~/libs/mantine/theme.config";
 
 type Props = {
