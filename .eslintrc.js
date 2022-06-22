@@ -123,6 +123,10 @@ module.exports = {
               match: true,
             },
           },
+          // {
+          //   selector: "typeAlias",
+          //   modifiers: "unused",
+          // },
         ],
       },
     },
