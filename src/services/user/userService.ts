@@ -5,7 +5,7 @@ import type { IUser } from "~/interfaces/model/IUser";
 import type { IUserService } from "~/interfaces/service/IUserService";
 
 export const userService: IUserService = {
-  useGet: (userId: string) => {
+  useGet: (userId: string): IUser | undefined => {
     const { data } = useQuery<IUser, Error>(
       ["user", { userId }],
       () => fetch(`${apiBaseUrl}/users/${userId}`).then((res) => res.json()),
@@ -14,10 +14,10 @@ export const userService: IUserService = {
 
     return data;
   },
-  create: async (user: IUser) => {
+  create: async (user: IUser): Promise<void> => {
     console.info(user);
   },
-  update: async (user: IUser) => {
+  update: async (user: IUser): Promise<void> => {
     console.info(user);
   },
 };
