@@ -5,6 +5,7 @@ import { MantineProvider } from "~/providers/mantine";
 import { ReactHelmetProvider } from "~/providers/react-helmet";
 import { ReactQueryProvider } from "~/providers/react-query";
 import { ReactRouterProvider } from "~/providers/react-router";
+import { RecoilProvider } from "~/providers/recoil";
 import { SuspenseProvider } from "~/providers/suspense";
 
 type Props = {
@@ -18,9 +19,11 @@ export const AppProvider: FC<Props> = ({ children }) => {
         <ReactHelmetProvider>
           <ReactQueryProvider>
             <MantineProvider>
-              <ReactRouterProvider>
-                <>{children}</>
-              </ReactRouterProvider>
+              <RecoilProvider>
+                <ReactRouterProvider>
+                  <>{children}</>
+                </ReactRouterProvider>
+              </RecoilProvider>
             </MantineProvider>
           </ReactQueryProvider>
         </ReactHelmetProvider>
