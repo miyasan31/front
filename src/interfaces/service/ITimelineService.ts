@@ -15,3 +15,7 @@ export interface ITimeline {
     color: string;
   }[];
 }
+
+export interface ITimelineService {
+  useGet: () => ITimeline[] | undefined;
+}

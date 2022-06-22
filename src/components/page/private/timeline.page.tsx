@@ -1,19 +1,11 @@
-import { useQuery } from "react-query";
-
 import { Head } from "~/components/shared/Head";
-import { apiBaseUrl } from "~/constants/env";
-import type { ITimeline } from "~/interfaces/api/ITimeline";
+import { timelineService } from "~/services/timeline/timelineService";
+
+const useGetTimeline = timelineService.useGet;
 
 const TimelinePage = () => {
-  const { data } = useQuery<ITimeline[], Error>(
-    ["timeline"],
-    () => fetch(`${apiBaseUrl}/timeline`).then((res) => res.json()),
-    { suspense: true },
-  );
-
+  const data = useGetTimeline();
   console.info(data);
-
-  if (!data) return null;
 
   return (
     <>
