@@ -1,10 +1,6 @@
-import { lazy } from "react";
-
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import SignInPage from "~/components/page/public/sign-in.page";
 import { FetchProvider } from "~/components/provider/Fetch";
-
-const CallbackInPage = lazy(() => import("~/components/page/public/callback"));
 
 export const publicRoutes = [
   {
@@ -18,10 +14,6 @@ export const publicRoutes = [
       {
         path: "/",
         element: <SignInPage />,
-      },
-      {
-        path: "callback",
-        element: <CallbackInPage />,
       },
     ],
   },

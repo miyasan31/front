@@ -8,10 +8,10 @@ import { authService } from "~/services/auth/authService";
 const useAuth = authService.useAuth;
 
 export const AppRoutes = () => {
-  const { isLoading, isSignIn } = useAuth();
+  const { isSignIn } = useAuth();
 
   const routes = isSignIn ? privateRoutes : publicRoutes;
   const element = useRoutes([...routes, ...commonRoutes]);
 
-  return isLoading ? null : <>{element}</>;
+  return <>{element}</>;
 };
