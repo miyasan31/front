@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
 import type { IAuthService, IGoogleSignInResponse, ISession, IUseSignOut } from "~/interfaces/service/IAuthService";
-import { session } from "~/libs/recoil/session";
+import { session } from "~/libs/recoil/atom/session";
 import { supabaseClient } from "~/libs/supabase/supabaseClient";
 
 export const authService: IAuthService = {
