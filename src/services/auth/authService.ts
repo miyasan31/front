@@ -49,6 +49,7 @@ export const authService: IAuthService = {
   },
 
   googleSignIn: async (): Promise<IGoogleSignInResponse> => {
+    console.info(window.location.origin);
     return await supabaseClient.auth.signIn(
       { provider: "google" },
       { redirectTo: `${window.location.origin}/callback` },
