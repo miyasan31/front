@@ -1,0 +1,16 @@
+schema: https://asia-northeast1-taskhub-backend.cloudfunctions.net/api/graphql
+documents: ./src/libs/graphql/**/{query,mutation}.graphql
+generates:
+  ./src/libs/graphql/service.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      fetcher: fetch
+  # ./graphql.schema.json:
+  #   plugins:
+  #     - "introspection"
+  ./src/libs/graphql/schema.graphql:
+    plugins:
+      - schema-ast
