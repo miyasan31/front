@@ -39,7 +39,8 @@ export default defineConfig(({ mode }) => {
 
   return {
     define: {
-      __VITE_API_URL__: JSON.stringify(env.VITE_API_URL),
+      "process.env": env,
+      // __VITE_API_URL__: JSON.stringify(env.VITE_API_URL),
     },
     plugins: [react(), tsconfigPaths(), VitePWA(pwaOptions)],
     assetsInclude: ["robots.txt"],
