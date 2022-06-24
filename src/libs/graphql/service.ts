@@ -5,11 +5,10 @@ export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K]
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 
-function fetcher<TData, TVariables>(endpoint: string, requestInit: RequestInit, query: string, variables?: TVariables) {
+function fetcher<TData, TVariables>(query: string, variables?: TVariables) {
   return async (): Promise<TData> => {
-    const res = await fetch(endpoint, {
+    const res = await fetch("https://asia-northeast1-taskhub-backend.cloudfunctions.net/api/graphql", {
       method: "POST",
-      ...requestInit,
       body: JSON.stringify({ query, variables }),
     });
 
@@ -34,7 +33,7 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type CreateUserDto = {
+export type GQLCreateUserDto = {
   avatar?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["DateTime"]>;
   email: Scalars["String"];
@@ -44,8 +43,7 @@ export type CreateUserDto = {
   updatedAt?: InputMaybe<Scalars["DateTime"]>;
 };
 
-export type Label = {
-  __typename?: "Label";
+export type GQLLabel = {
   color: Scalars["String"];
   createdAt: Scalars["DateTime"];
   id: Scalars["Int"];
@@ -55,53 +53,49 @@ export type Label = {
   userId: Scalars["String"];
 };
 
-export type Like = {
-  __typename?: "Like";
+export type GQLLike = {
   createdAt: Scalars["DateTime"];
   id: Scalars["Int"];
   taskId: Scalars["Int"];
   userId: Scalars["ID"];
 };
 
-export type Mutation = {
-  __typename?: "Mutation";
-  createUser: User;
+export type GQLMutation = {
+  createUser: GQLUser;
 };
 
-export type MutationCreateUserArgs = {
-  user: CreateUserDto;
+export type GQLMutationCreateUserArgs = {
+  user: GQLCreateUserDto;
 };
 
-export type Query = {
-  __typename?: "Query";
-  label: Label;
-  labels: Array<Maybe<Label>>;
-  like: Like;
-  likes: Array<Maybe<Like>>;
-  task: Task;
-  tasks: Array<Maybe<Task>>;
-  user: User;
-  users: Array<Maybe<User>>;
+export type GQLQuery = {
+  label: GQLLabel;
+  labels: Array<Maybe<GQLLabel>>;
+  like: GQLLike;
+  likes: Array<Maybe<GQLLike>>;
+  task: GQLTask;
+  tasks: Array<Maybe<GQLTask>>;
+  user: GQLUser;
+  users: Array<Maybe<GQLUser>>;
 };
 
-export type QueryLabelArgs = {
+export type GQLQueryLabelArgs = {
   id: Scalars["Int"];
 };
 
-export type QueryLikeArgs = {
+export type GQLQueryLikeArgs = {
   id: Scalars["Int"];
 };
 
-export type QueryTaskArgs = {
+export type GQLQueryTaskArgs = {
   id: Scalars["Int"];
 };
 
-export type QueryUserArgs = {
+export type GQLQueryUserArgs = {
   id: Scalars["ID"];
 };
 
-export type Task = {
-  __typename?: "Task";
+export type GQLTask = {
   createdAt: Scalars["DateTime"];
   description: Scalars["String"];
   id: Scalars["Int"];
@@ -112,33 +106,32 @@ export type Task = {
   userId: Scalars["String"];
 };
 
-export type User = {
-  __typename?: "User";
+export type GQLUser = {
   avatar?: Maybe<Scalars["String"]>;
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
   id: Scalars["ID"];
-  labels: Array<Label>;
+  labels: Array<GQLLabel>;
   name: Scalars["String"];
   profile: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
 
-export type CreateUserMutationVariables = Exact<{
-  input: CreateUserDto;
+export type GQLCreateUserMutationVariables = Exact<{
+  input: GQLCreateUserDto;
 }>;
 
-export type CreateUserMutation = {
-  __typename?: "Mutation";
-  createUser: { __typename?: "User"; id: string; name: string; email: string; avatar?: string | null };
-};
+export type GQLCreateUserMutation = { createUser: { id: string; name: string; email: string; avatar?: string | null } };
 
-export type UsersQueryVariables = Exact<{ [key: string]: never }>;
+export type GQLUsersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type UsersQuery = {
-  __typename?: "Query";
-  users: Array<{ __typename?: "User"; id: string; name: string; avatar?: string | null } | null>;
-};
+export type GQLUsersQuery = { users: Array<{ id: string; name: string; avatar?: string | null } | null> };
+
+export type GQLGetUserByIdQueryVariables = Exact<{
+  userId: Scalars["ID"];
+}>;
+
+export type GQLGetUserByIdQuery = { user: { id: string; name: string; email: string; avatar?: string | null } };
 
 export const CreateUserDocument = `
     mutation createUser($input: CreateUserDto!) {
@@ -151,20 +144,16 @@ export const CreateUserDocument = `
 }
     `;
 export const useCreateUserMutation = <TError = unknown, TContext = unknown>(
-  dataSource: { endpoint: string; fetchParams?: RequestInit },
-  options?: UseMutationOptions<CreateUserMutation, TError, CreateUserMutationVariables, TContext>,
+  options?: UseMutationOptions<GQLCreateUserMutation, TError, GQLCreateUserMutationVariables, TContext>,
 ) =>
-  useMutation<CreateUserMutation, TError, CreateUserMutationVariables, TContext>(
+  useMutation<GQLCreateUserMutation, TError, GQLCreateUserMutationVariables, TContext>(
     ["createUser"],
-    (variables?: CreateUserMutationVariables) =>
-      fetcher<CreateUserMutation, CreateUserMutationVariables>(
-        dataSource.endpoint,
-        dataSource.fetchParams || {},
-        CreateUserDocument,
-        variables,
-      )(),
+    (variables?: GQLCreateUserMutationVariables) =>
+      fetcher<GQLCreateUserMutation, GQLCreateUserMutationVariables>(CreateUserDocument, variables)(),
     options,
   );
+useCreateUserMutation.fetcher = (variables: GQLCreateUserMutationVariables) =>
+  fetcher<GQLCreateUserMutation, GQLCreateUserMutationVariables>(CreateUserDocument, variables);
 export const UsersDocument = `
     query users {
   users {
@@ -174,18 +163,39 @@ export const UsersDocument = `
   }
 }
     `;
-export const useUsersQuery = <TData = UsersQuery, TError = unknown>(
-  dataSource: { endpoint: string; fetchParams?: RequestInit },
-  variables?: UsersQueryVariables,
-  options?: UseQueryOptions<UsersQuery, TError, TData>,
+export const useUsersQuery = <TData = GQLUsersQuery, TError = unknown>(
+  variables?: GQLUsersQueryVariables,
+  options?: UseQueryOptions<GQLUsersQuery, TError, TData>,
 ) =>
-  useQuery<UsersQuery, TError, TData>(
+  useQuery<GQLUsersQuery, TError, TData>(
     variables === undefined ? ["users"] : ["users", variables],
-    fetcher<UsersQuery, UsersQueryVariables>(
-      dataSource.endpoint,
-      dataSource.fetchParams || {},
-      UsersDocument,
-      variables,
-    ),
+    fetcher<GQLUsersQuery, GQLUsersQueryVariables>(UsersDocument, variables),
     options,
   );
+useUsersQuery.document = UsersDocument;
+
+useUsersQuery.fetcher = (variables?: GQLUsersQueryVariables) =>
+  fetcher<GQLUsersQuery, GQLUsersQueryVariables>(UsersDocument, variables);
+export const GetUserByIdDocument = `
+    query getUserById($userId: ID!) {
+  user(id: $userId) {
+    id
+    name
+    email
+    avatar
+  }
+}
+    `;
+export const useGetUserByIdQuery = <TData = GQLGetUserByIdQuery, TError = unknown>(
+  variables: GQLGetUserByIdQueryVariables,
+  options?: UseQueryOptions<GQLGetUserByIdQuery, TError, TData>,
+) =>
+  useQuery<GQLGetUserByIdQuery, TError, TData>(
+    ["getUserById", variables],
+    fetcher<GQLGetUserByIdQuery, GQLGetUserByIdQueryVariables>(GetUserByIdDocument, variables),
+    options,
+  );
+useGetUserByIdQuery.document = GetUserByIdDocument;
+
+useGetUserByIdQuery.fetcher = (variables: GQLGetUserByIdQueryVariables) =>
+  fetcher<GQLGetUserByIdQuery, GQLGetUserByIdQueryVariables>(GetUserByIdDocument, variables);

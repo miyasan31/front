@@ -5,3 +5,12 @@ query users {
     avatar
   }
 }
+
+query getUserById($userId: ID!) {
+  user(id: $userId) {
+    id
+    name
+    email
+    avatar
+  }
+}
