@@ -18,32 +18,26 @@ export const authService: IAuthService = {
         navigate("/");
         return;
       }
-
       // TODO:ユーザーが存在するかチェックする
-
       setSessionInfo({ isLoading: false, isSignIn: true });
     }, []);
 
     useEffect(() => {
-      listenSession();
+      isLoading && listenSession();
+    }, [isLoading]);
 
-      const { data: authListener } = supabaseClient.auth.onAuthStateChange(async (event, session) => {
-        console.info(`event: ${event}`);
-        console.info(`session uid: ${session?.user?.id}`);
-
+    useEffect(() => {
+      const { data: authListener } = supabaseClient.auth.onAuthStateChange(async (event, _session) => {
         if (event === "SIGNED_IN") {
           setSessionInfo((prev) => ({ ...prev, isLoading: true }));
         }
-
         if (event === "SIGNED_OUT") {
           setSessionInfo((prev) => ({ ...prev, isLoading: true }));
         }
       });
 
-      return () => {
-        authListener?.unsubscribe();
-      };
-    }, [isLoading]);
+      return () => authListener?.unsubscribe();
+    }, []);
 
     return { isLoading, isSignIn };
   },
