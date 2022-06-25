@@ -1,0 +1,27 @@
+overwrite: true
+schema: ${VITE_API_URL}
+# schema: ./src/libs/graphql/schema.graphql
+documents: ./src/libs/graphql/**/{query,mutation}.graphql
+generates:
+  ./src/libs/graphql/service.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      skipTypename: true
+      exposeDocument: true
+      exposeFetcher: true
+      exposeQueryKeys: true
+      exposeMutationKeys: true
+      typesPrefix: GQL
+      fetcher:
+        endpoint: ${VITE_API_URL}
+        isReactHook: false
+        fetchParams:
+          headers:
+            credentials: include
+            content-type: application/json
+  ./src/libs/graphql/schema.graphql:
+    plugins:
+      - schema-ast

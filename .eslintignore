@@ -6,3 +6,6 @@ yarn.lock
 
 # build
 dist/*
+
+# graphql
+src/libs/graphql/*.ts

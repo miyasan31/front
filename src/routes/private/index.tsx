@@ -1,9 +1,10 @@
 import { lazy } from "react";
+import { Navigate } from "react-router-dom";
 
 import { PrivateLayout } from "~/components/layout/PrivateLayout";
-import HomePage from "~/components/page/private/home.page";
 import { FetchProvider } from "~/components/provider/Fetch";
 
+const HomePage = lazy(() => import("~/components/page/private/home.page"));
 const TimelinePage = lazy(() => import("~/components/page/private/timeline.page"));
 const SearchPage = lazy(() => import("~/components/page/private/search.page"));
 const SettingPage = lazy(() => import("~/components/page/private/setting.page"));
@@ -21,6 +22,11 @@ export const privateRoutes = [
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        index: true,
+        path: "/hoge",
+        element: <Navigate to="/timeline" replace={true} />,
       },
       {
         path: "timeline",

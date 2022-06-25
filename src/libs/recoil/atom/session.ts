@@ -6,6 +6,6 @@ export const session = atom<ISession>({
   key: "session",
   default: {
     isLoading: true,
-    isSignIn: false,
+    user: null,
   },
 });
