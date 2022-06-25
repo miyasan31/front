@@ -24,6 +24,6 @@ generates:
           headers:
             credentials: include
             content-type: application/json
-  ./src/libs/graphql/schema.graphql:
-    plugins:
-      - schema-ast
+  # ./src/libs/graphql/schema.graphql:
+  #   plugins:
+  #     - schema-ast
