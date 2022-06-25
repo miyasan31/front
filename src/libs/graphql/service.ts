@@ -1,3 +1,4 @@
+import { apiBaseUrl } from "~/constants/env";
 import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from "react-query";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -7,7 +8,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Mayb
 
 function fetcher<TData, TVariables>(query: string, variables?: TVariables) {
   return async (): Promise<TData> => {
-    const res = await fetch("https://asia-northeast1-taskhub-backend.cloudfunctions.net/api/graphql", {
+    const res = await fetch(apiBaseUrl as string, {
       method: "POST",
       ...{ headers: { credentials: "include", "content-type": "application/json" } },
       body: JSON.stringify({ query, variables }),
@@ -47,17 +48,17 @@ export type GQLCreateUserDto = {
 export type GQLLabel = {
   color: Scalars["String"];
   createdAt: Scalars["DateTime"];
-  id: Scalars["Int"];
+  id: Scalars["ID"];
   isActive: Scalars["Boolean"];
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
-  userId: Scalars["String"];
+  userId: Scalars["ID"];
 };
 
 export type GQLLike = {
   createdAt: Scalars["DateTime"];
-  id: Scalars["Int"];
-  taskId: Scalars["Int"];
+  id: Scalars["ID"];
+  taskId: Scalars["ID"];
   userId: Scalars["ID"];
 };
 
@@ -81,15 +82,15 @@ export type GQLQuery = {
 };
 
 export type GQLQueryLabelArgs = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
 };
 
 export type GQLQueryLikeArgs = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
 };
 
 export type GQLQueryTaskArgs = {
-  id: Scalars["Int"];
+  id: Scalars["ID"];
 };
 
 export type GQLQueryUserArgs = {
@@ -99,12 +100,12 @@ export type GQLQueryUserArgs = {
 export type GQLTask = {
   createdAt: Scalars["DateTime"];
   description: Scalars["String"];
-  id: Scalars["Int"];
+  id: Scalars["ID"];
   isDone: Scalars["Boolean"];
-  labelId: Scalars["Float"];
+  labelId: Scalars["ID"];
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
-  userId: Scalars["String"];
+  userId: Scalars["ID"];
 };
 
 export type GQLUser = {

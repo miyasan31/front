@@ -8,6 +8,8 @@ generates:
       - typescript
       - typescript-operations
       - typescript-react-query
+      - add:
+          content: "import { apiBaseUrl } from '~/constants/env';"
     config:
       skipTypename: true
       exposeDocument: true
@@ -16,8 +18,8 @@ generates:
       exposeMutationKeys: true
       typesPrefix: GQL
       fetcher:
-        endpoint: ${VITE_API_URL}
-        isReactHook: false
+        endpoint: "apiBaseUrl"
+        # isReactHook: false
         fetchParams:
           headers:
             credentials: include
