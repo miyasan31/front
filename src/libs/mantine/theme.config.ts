@@ -11,9 +11,7 @@ export const breakpointsTheme = {
 export const otherTheme = {
   lineHeights: [1.2, 1.4, 1.6, 1.8, 1.95],
   reduceMotion: true,
-  myCustomFunction: () => {
-    console.info("myCustomFunction");
-  },
+  myCustomFunction: () => {},
 };
 
 export const customTheme: MantineThemeOverride = {

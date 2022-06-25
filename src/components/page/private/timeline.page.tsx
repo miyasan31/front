@@ -4,8 +4,7 @@ import { timelineService } from "~/services/timeline/timelineService";
 const useGetTimeline = timelineService.useGet;
 
 const TimelinePage = () => {
-  const data = useGetTimeline();
-  console.info(data);
+  const _data = useGetTimeline();
 
   return (
     <>

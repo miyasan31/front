@@ -8,7 +8,6 @@ import { userService } from "~/services/user/userService";
 const useGetUser = userService.useGet;
 
 const HomePage = () => {
-  console.info("render home page");
   const sessionInfo = useRecoilValue(session);
   const { data } = useGetUser(sessionInfo?.user?.id ?? "");
 

@@ -29,16 +29,13 @@ export const authService: IAuthService = {
       if (!isLoading) return;
       if (user) return;
 
-      console.info("listenSession");
       const sessionUser = supabaseClient.auth.session()?.user;
-      console.info(sessionUser);
       if (!sessionUser) {
         setSessionInfo((prev) => ({ ...prev, isLoading: false }));
         return;
       }
 
       const res = await userFetch(sessionUser.id);
-      console.info(res);
 
       // TODO:バックエンドのエラーレスポンス改修検討
       if (res.message === "Not Found") {
