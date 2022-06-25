@@ -29,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "@graphql-codegen/add": "^3.1.1",
     "@mantine/core": "^4.2.10",
     "@mantine/hooks": "^4.2.10",
     "@supabase/supabase-js": "^1.35.3",
