@@ -3,6 +3,7 @@ mutation createUser($input: CreateUserDto!) {
     id
     name
     email
+    profile
     avatar
   }
 }

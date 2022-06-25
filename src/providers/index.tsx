@@ -7,6 +7,7 @@ import { ReactQueryProvider } from "~/providers/react-query";
 import { ReactRouterProvider } from "~/providers/react-router";
 import { RecoilProvider } from "~/providers/recoil";
 import { SuspenseProvider } from "~/providers/suspense";
+import { AuthProvider } from "~/routes";
 
 type Props = {
   children: ReactNode;
@@ -18,13 +19,15 @@ export const AppProvider: FC<Props> = ({ children }) => {
       <RecoilProvider>
         <ReactHelmetProvider>
           <MantineProvider>
-            <ErrorBoundaryProvider>
-              <SuspenseProvider>
-                <ReactRouterProvider>
-                  <>{children}</>
-                </ReactRouterProvider>
-              </SuspenseProvider>
-            </ErrorBoundaryProvider>
+            <ReactRouterProvider>
+              <AuthProvider>
+                <ErrorBoundaryProvider>
+                  <SuspenseProvider>
+                    <>{children}</>
+                  </SuspenseProvider>
+                </ErrorBoundaryProvider>
+              </AuthProvider>
+            </ReactRouterProvider>
           </MantineProvider>
         </ReactHelmetProvider>
       </RecoilProvider>

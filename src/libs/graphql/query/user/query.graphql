@@ -2,6 +2,7 @@ query users {
   users {
     id
     name
+    profile
     avatar
   }
 }
@@ -10,7 +11,7 @@ query getUserById($userId: ID!) {
   user(id: $userId) {
     id
     name
-    email
+    profile
     avatar
   }
 }

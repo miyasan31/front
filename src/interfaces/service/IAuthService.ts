@@ -1,8 +1,10 @@
 import type { ApiError, Provider, Session, User } from "@supabase/supabase-js";
 
+import type { IUser } from "~/interfaces/model/IUser";
+
 export interface ISession {
   isLoading: boolean;
-  isSignIn: boolean;
+  user: Pick<IUser, "id" | "name" | "avatar" | "profile"> | null;
 }
 
 export interface IGoogleSignInResponse {
@@ -18,7 +20,7 @@ export interface IUseSignOut {
 }
 
 export interface IAuthService {
-  useAuth: () => ISession;
+  useAuth: () => void;
   googleSignIn: () => Promise<IGoogleSignInResponse>;
   useSignOut: () => IUseSignOut;
 }

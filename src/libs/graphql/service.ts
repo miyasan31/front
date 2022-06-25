@@ -9,6 +9,7 @@ function fetcher<TData, TVariables>(query: string, variables?: TVariables) {
   return async (): Promise<TData> => {
     const res = await fetch("https://asia-northeast1-taskhub-backend.cloudfunctions.net/api/graphql", {
       method: "POST",
+      ...{ headers: { credentials: "include", "content-type": "application/json" } },
       body: JSON.stringify({ query, variables }),
     });
 
@@ -121,17 +122,21 @@ export type GQLCreateUserMutationVariables = Exact<{
   input: GQLCreateUserDto;
 }>;
 
-export type GQLCreateUserMutation = { createUser: { id: string; name: string; email: string; avatar?: string | null } };
+export type GQLCreateUserMutation = {
+  createUser: { id: string; name: string; email: string; profile: string; avatar?: string | null };
+};
 
 export type GQLUsersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GQLUsersQuery = { users: Array<{ id: string; name: string; avatar?: string | null } | null> };
+export type GQLUsersQuery = {
+  users: Array<{ id: string; name: string; profile: string; avatar?: string | null } | null>;
+};
 
 export type GQLGetUserByIdQueryVariables = Exact<{
   userId: Scalars["ID"];
 }>;
 
-export type GQLGetUserByIdQuery = { user: { id: string; name: string; email: string; avatar?: string | null } };
+export type GQLGetUserByIdQuery = { user: { id: string; name: string; profile: string; avatar?: string | null } };
 
 export const CreateUserDocument = `
     mutation createUser($input: CreateUserDto!) {
@@ -139,6 +144,7 @@ export const CreateUserDocument = `
     id
     name
     email
+    profile
     avatar
   }
 }
@@ -152,6 +158,8 @@ export const useCreateUserMutation = <TError = unknown, TContext = unknown>(
       fetcher<GQLCreateUserMutation, GQLCreateUserMutationVariables>(CreateUserDocument, variables)(),
     options,
   );
+useCreateUserMutation.getKey = () => ["createUser"];
+
 useCreateUserMutation.fetcher = (variables: GQLCreateUserMutationVariables) =>
   fetcher<GQLCreateUserMutation, GQLCreateUserMutationVariables>(CreateUserDocument, variables);
 export const UsersDocument = `
@@ -159,6 +167,7 @@ export const UsersDocument = `
   users {
     id
     name
+    profile
     avatar
   }
 }
@@ -174,6 +183,8 @@ export const useUsersQuery = <TData = GQLUsersQuery, TError = unknown>(
   );
 useUsersQuery.document = UsersDocument;
 
+useUsersQuery.getKey = (variables?: GQLUsersQueryVariables) =>
+  variables === undefined ? ["users"] : ["users", variables];
 useUsersQuery.fetcher = (variables?: GQLUsersQueryVariables) =>
   fetcher<GQLUsersQuery, GQLUsersQueryVariables>(UsersDocument, variables);
 export const GetUserByIdDocument = `
@@ -181,7 +192,7 @@ export const GetUserByIdDocument = `
   user(id: $userId) {
     id
     name
-    email
+    profile
     avatar
   }
 }
@@ -197,5 +208,6 @@ export const useGetUserByIdQuery = <TData = GQLGetUserByIdQuery, TError = unknow
   );
 useGetUserByIdQuery.document = GetUserByIdDocument;
 
+useGetUserByIdQuery.getKey = (variables: GQLGetUserByIdQueryVariables) => ["getUserById", variables];
 useGetUserByIdQuery.fetcher = (variables: GQLGetUserByIdQueryVariables) =>
   fetcher<GQLGetUserByIdQuery, GQLGetUserByIdQueryVariables>(GetUserByIdDocument, variables);
