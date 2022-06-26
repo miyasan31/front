@@ -1,5 +1,7 @@
 import type { GQLUser } from "~/libs/graphql/service";
 
+export interface IUser extends GQLUser {}
+
 // export interface IUser {
 //   id: string;
 //   name: string;
@@ -9,5 +11,3 @@ import type { GQLUser } from "~/libs/graphql/service";
 //   createdAt?: Date;
 //   updatedAt?: Date;
 // }
-
-export interface IUser extends GQLUser {}
