@@ -3,7 +3,7 @@ import { timelineService } from "~/services/timeline/timelineService";
 
 const useGetTimeline = timelineService.useGet;
 
-const TimelinePage = () => {
+export const Timeline = () => {
   const _data = useGetTimeline();
 
   return (
@@ -14,5 +14,3 @@ const TimelinePage = () => {
     </>
   );
 };
-
-export default TimelinePage;

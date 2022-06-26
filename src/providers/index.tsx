@@ -6,7 +6,6 @@ import { ReactHelmetProvider } from "~/providers/react-helmet";
 import { ReactQueryProvider } from "~/providers/react-query";
 import { ReactRouterProvider } from "~/providers/react-router";
 import { RecoilProvider } from "~/providers/recoil";
-import { SuspenseProvider } from "~/providers/suspense";
 import { AuthProvider } from "~/routes";
 
 type Props = {
@@ -15,22 +14,20 @@ type Props = {
 
 export const AppProvider: FC<Props> = ({ children }) => {
   return (
-    <ReactQueryProvider>
-      <RecoilProvider>
-        <ReactHelmetProvider>
-          <MantineProvider>
+    <MantineProvider>
+      <ReactHelmetProvider>
+        <ReactQueryProvider>
+          <RecoilProvider>
             <ReactRouterProvider>
-              <AuthProvider>
-                <ErrorBoundaryProvider>
-                  <SuspenseProvider>
-                    <>{children}</>
-                  </SuspenseProvider>
-                </ErrorBoundaryProvider>
-              </AuthProvider>
+              <ErrorBoundaryProvider>
+                <AuthProvider>
+                  <>{children}</>
+                </AuthProvider>
+              </ErrorBoundaryProvider>
             </ReactRouterProvider>
-          </MantineProvider>
-        </ReactHelmetProvider>
-      </RecoilProvider>
-    </ReactQueryProvider>
+          </RecoilProvider>
+        </ReactQueryProvider>
+      </ReactHelmetProvider>
+    </MantineProvider>
   );
 };

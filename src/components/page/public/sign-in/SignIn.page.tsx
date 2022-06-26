@@ -5,7 +5,7 @@ import { authService } from "~/services/auth/authService";
 
 const handleGoogleSignIn = authService.googleSignIn;
 
-const SignInPage = () => {
+export const SignIn = () => {
   return (
     <>
       <Head title="sign in page" description="sign in page" />
@@ -14,5 +14,3 @@ const SignInPage = () => {
     </>
   );
 };
-
-export default SignInPage;

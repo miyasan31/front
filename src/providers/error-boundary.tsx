@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 
-import { ReactErrorBoundary } from "~/components/provider/ErrorBoundary";
+import { ErrorBoundary } from "~/components/provider/ErrorBoundary";
 import { AppFallback } from "~/components/provider/ErrorBoundary/Fallback";
 
 type Props = {
@@ -8,5 +8,5 @@ type Props = {
 };
 
 export const ErrorBoundaryProvider: FC<Props> = ({ children }) => {
-  return <ReactErrorBoundary FallbackComponent={AppFallback}>{children}</ReactErrorBoundary>;
+  return <ErrorBoundary FallbackComponent={AppFallback}>{children}</ErrorBoundary>;
 };

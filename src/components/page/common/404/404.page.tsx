@@ -2,7 +2,7 @@ import { Link } from "~/components/lib/Link";
 import { Head } from "~/components/shared/Head";
 import { successButton } from "~/constants/buttonColor";
 
-const NotFoundPage = () => {
+export const NotFound = () => {
   return (
     <>
       <Head title="not found page" description="not found page" />
@@ -19,5 +19,3 @@ const NotFoundPage = () => {
     </>
   );
 };
-
-export default NotFoundPage;

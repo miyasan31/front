@@ -1,15 +1,18 @@
 import { Image, Text } from "@mantine/core";
-import { useRecoilValue } from "recoil";
 
+// import { useRecoilValue } from "recoil";
 import { Head } from "~/components/shared/Head";
-import { session } from "~/libs/recoil/atom/session";
+// import { session } from "~/libs/recoil/atom/session";
 import { userService } from "~/services/user/userService";
 
 const useGetUser = userService.useGet;
 
-const HomePage = () => {
-  const sessionInfo = useRecoilValue(session);
-  const { data } = useGetUser(sessionInfo?.user?.id ?? "");
+export const Home = () => {
+  // const sessionInfo = useRecoilValue(session);
+  const { data, error } = useGetUser("aaa");
+
+  console.info(data);
+  console.info(error);
 
   if (!data?.user) return null;
 
@@ -25,5 +28,3 @@ const HomePage = () => {
     </>
   );
 };
-
-export default HomePage;

@@ -5,7 +5,7 @@ import { authService } from "~/services/auth/authService";
 
 const useSignOut = authService.useSignOut;
 
-const AccountPage = () => {
+export const Account = () => {
   const { handleSignOut } = useSignOut();
   return (
     <>
@@ -17,5 +17,3 @@ const AccountPage = () => {
     </>
   );
 };
-
-export default AccountPage;

@@ -1,6 +1,6 @@
 import { Head } from "~/components/shared/Head";
 
-const SearchPage = () => {
+export const Search = () => {
   return (
     <>
       <Head title="search page" description="search page" />
@@ -9,5 +9,3 @@ const SearchPage = () => {
     </>
   );
 };
-
-export default SearchPage;

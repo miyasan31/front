@@ -1,6 +1,6 @@
 import { Head } from "~/components/shared/Head";
 
-const SettingPage = () => {
+export const Setting = () => {
   return (
     <>
       <Head title="setting page" description="setting page" />
@@ -9,5 +9,3 @@ const SettingPage = () => {
     </>
   );
 };
-
-export default SettingPage;

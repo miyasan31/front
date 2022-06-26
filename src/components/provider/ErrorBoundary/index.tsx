@@ -1,7 +1,8 @@
 import type { FC, ReactNode } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 
-import { LayoutFallback } from "./Fallback";
+import { LayoutFallback } from "~/components/provider/ErrorBoundary/Fallback";
+
 import type { ErrorFallbackProps } from "./Fallback/ErrorFallbackProps";
 
 type ErrorBoundaryProps = {
@@ -10,11 +11,11 @@ type ErrorBoundaryProps = {
   FallbackComponent?: FC<ErrorFallbackProps>;
 };
 
-export const ReactErrorBoundary: FC<ErrorBoundaryProps> = ({ children, onReset, FallbackComponent }) => {
+export const ErrorBoundary: FC<ErrorBoundaryProps> = ({ children, onReset, FallbackComponent }) => {
   return (
     /* eslint-disable react/jsx-handler-names */
-    <ErrorBoundary FallbackComponent={FallbackComponent || LayoutFallback} onReset={onReset}>
+    <ReactErrorBoundary FallbackComponent={FallbackComponent || LayoutFallback} onReset={onReset}>
       {children}
-    </ErrorBoundary>
+    </ReactErrorBoundary>
   );
 };
