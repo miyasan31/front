@@ -1,6 +1,6 @@
-import type { GQLLabel } from "~/libs/graphql/service";
+import type { Label } from "~/libs/graphql/service";
 
-export interface ILabel extends GQLLabel {}
+export interface ILabel extends Label {}
 
 // import type { IUser } from "~/interfaces/model/IUser";
 

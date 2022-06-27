@@ -1,6 +1,6 @@
-import type { GQLTask } from "~/libs/graphql/service";
+import type { Task } from "~/libs/graphql/service";
 
-export interface ITask extends GQLTask {}
+export interface ITask extends Task {}
 
 // import type { ILabel } from "~/interfaces/model/ILabel";
 // import type { IUser } from "~/interfaces/model/IUser";

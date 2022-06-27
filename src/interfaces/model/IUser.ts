@@ -1,6 +1,6 @@
-import type { GQLUser } from "~/libs/graphql/service";
+import type { User } from "~/libs/graphql/service";
 
-export interface IUser extends GQLUser {}
+export interface IUser extends User {}
 
 // export interface IUser {
 //   id: string;

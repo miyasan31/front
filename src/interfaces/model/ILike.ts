@@ -1,6 +1,6 @@
-import type { GQLLike } from "~/libs/graphql/service";
+import type { Like } from "~/libs/graphql/service";
 
-export interface ILike extends GQLLike {}
+export interface ILike extends Like {}
 
 // import type { ITask } from "~/interfaces/model/ITask";
 // import type { IUser } from "~/interfaces/model/IUser";
