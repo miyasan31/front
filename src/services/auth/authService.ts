@@ -3,24 +3,23 @@ import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-import type { IAuthService, IGoogleSignInResponse, IUseSignOut } from "~/interfaces/service/IAuthService";
-import { useGetUserByIdQuery } from "~/libs/graphql/service";
+import type { IAuthService, IUseSignOut } from "~/interfaces/service/IAuthService";
+import { useCreateUserMutation, useGetUserByIdQuery } from "~/libs/graphql/service";
+import { useGQLClient } from "~/libs/graphql-request/useGQLClient";
 import { session } from "~/libs/recoil/atom/session";
 import { supabaseClient } from "~/libs/supabase/supabaseClient";
-import { userService } from "~/services/user/userService";
-
-const userCreate = userService.create;
 
 export const authService: IAuthService = {
   useAuth: () => {
     const queryClient = useQueryClient();
-    const { mutateAsync } = userCreate();
+    const { createPublicGQLClient } = useGQLClient();
+    const { mutateAsync } = useCreateUserMutation(createPublicGQLClient());
     const [{ isLoading, user }, setSessionInfo] = useRecoilState(session);
 
     const userFetch = useCallback(async (userId: string) => {
       return await queryClient.fetchQuery(useGetUserByIdQuery.getKey({ userId }), () =>
         useGetUserByIdQuery
-          .fetcher({ userId })()
+          .fetcher(createPublicGQLClient(), { userId })()
           .catch((error) => error),
       );
     }, []);
@@ -38,30 +37,30 @@ export const authService: IAuthService = {
       const res = await userFetch(sessionUser.id);
 
       // TODO:バックエンドのエラーレスポンス改修検討
-      if (res.message === "Not Found") {
-        const data = await mutateAsync({
-          input: {
-            id: sessionUser.id,
-            name: sessionUser.user_metadata.full_name,
-            avatar: sessionUser.user_metadata.avatar_url,
-            email: sessionUser.user_metadata.email,
-            profile: "プロフ初期値",
-          },
-        });
-
-        await setSessionInfo({
-          isLoading: false,
-          user: {
-            id: data.createUser.id,
-            name: data.createUser.name,
-            avatar: data.createUser.avatar,
-            profile: data.createUser.email,
-          },
-        });
+      if (res.user) {
+        setSessionInfo({ isLoading: false, user: res.user });
         return;
       }
 
-      setSessionInfo({ isLoading: false, user: res.user });
+      const data = await mutateAsync({
+        input: {
+          id: sessionUser.id,
+          name: sessionUser.user_metadata.full_name,
+          avatar: sessionUser.user_metadata.avatar_url,
+          email: sessionUser.user_metadata.email,
+          profile: "プロフ初期値ダミーです",
+        },
+      });
+
+      await setSessionInfo({
+        isLoading: false,
+        user: {
+          id: data.createUser.id,
+          name: data.createUser.name,
+          avatar: data.createUser.avatar,
+          profile: data.createUser.email,
+        },
+      });
     }, []);
 
     useEffect(() => {
@@ -80,8 +79,8 @@ export const authService: IAuthService = {
       return () => authListener?.unsubscribe();
     }, [isLoading]);
   },
-  googleSignIn: async (): Promise<IGoogleSignInResponse> => {
-    return await supabaseClient.auth.signIn({ provider: "google" }, { redirectTo: `${window.location.origin}` });
+  googleSignIn: (): void => {
+    supabaseClient.auth.signIn({ provider: "google" }, { redirectTo: `${window.location.origin}` });
   },
   useSignOut: (): IUseSignOut => {
     const navigate = useNavigate();

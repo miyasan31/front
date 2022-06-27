@@ -1,10 +1,22 @@
 import type { IUserService } from "~/interfaces/service/IUserService";
-import { useCreateUserMutation, useGetUserByIdQuery } from "~/libs/graphql/service";
+import { useGetUserByIdQuery } from "~/libs/graphql/service";
+import { useGQLClient } from "~/libs/graphql-request/useGQLClient";
 
 export const userService: IUserService = {
   useGet: (userId) => {
-    const data = useGetUserByIdQuery({ userId });
-    return data;
+    const { createPrivateGQLClient } = useGQLClient();
+
+    const res = useGetUserByIdQuery(
+      createPrivateGQLClient(),
+      { userId },
+      {
+        enabled: !!userId,
+        onError: (error) => {
+          console.info(error);
+        },
+      },
+    );
+
+    return res;
   },
-  create: useCreateUserMutation,
 };

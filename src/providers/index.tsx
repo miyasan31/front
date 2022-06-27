@@ -18,13 +18,13 @@ export const AppProvider: FC<Props> = ({ children }) => {
       <ReactHelmetProvider>
         <ReactQueryProvider>
           <RecoilProvider>
-            <ReactRouterProvider>
+            <AuthProvider>
               <ErrorBoundaryProvider>
-                <AuthProvider>
+                <ReactRouterProvider>
                   <>{children}</>
-                </AuthProvider>
+                </ReactRouterProvider>
               </ErrorBoundaryProvider>
-            </ReactRouterProvider>
+            </AuthProvider>
           </RecoilProvider>
         </ReactQueryProvider>
       </ReactHelmetProvider>
