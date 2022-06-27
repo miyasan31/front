@@ -1,4 +1,5 @@
-import { apiBaseUrl } from "~/constants/env";
+import { GraphQLClient } from "graphql-request";
+import { RequestInit } from "graphql-request/dist/types.dom";
 import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from "react-query";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -6,24 +7,13 @@ export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K]
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 
-function fetcher<TData, TVariables>(query: string, variables?: TVariables) {
-  return async (): Promise<TData> => {
-    const res = await fetch(apiBaseUrl as string, {
-      method: "POST",
-      ...{ headers: { credentials: "include", "content-type": "application/json" } },
-      body: JSON.stringify({ query, variables }),
-    });
-
-    const json = await res.json();
-
-    if (json.errors) {
-      const { message } = json.errors[0];
-
-      throw new Error(message);
-    }
-
-    return json.data;
-  };
+function fetcher<TData, TVariables>(
+  client: GraphQLClient,
+  query: string,
+  variables?: TVariables,
+  headers?: RequestInit["headers"],
+) {
+  return async (): Promise<TData> => client.request<TData, TVariables>(query, variables, headers);
 }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -35,7 +25,7 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type GQLCreateUserDto = {
+export type CreateUserDto = {
   avatar?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["DateTime"]>;
   email: Scalars["String"];
@@ -45,7 +35,7 @@ export type GQLCreateUserDto = {
   updatedAt?: InputMaybe<Scalars["DateTime"]>;
 };
 
-export type GQLLabel = {
+export type Label = {
   color: Scalars["String"];
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
@@ -55,49 +45,49 @@ export type GQLLabel = {
   userId: Scalars["ID"];
 };
 
-export type GQLLike = {
+export type Like = {
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   taskId: Scalars["ID"];
   userId: Scalars["ID"];
 };
 
-export type GQLMutation = {
-  createUser: GQLUser;
+export type Mutation = {
+  createUser: User;
 };
 
-export type GQLMutationCreateUserArgs = {
-  user: GQLCreateUserDto;
+export type MutationCreateUserArgs = {
+  user: CreateUserDto;
 };
 
-export type GQLQuery = {
-  label: GQLLabel;
-  labels: Array<Maybe<GQLLabel>>;
-  like: GQLLike;
-  likes: Array<Maybe<GQLLike>>;
-  task: GQLTask;
-  tasks: Array<Maybe<GQLTask>>;
-  user: GQLUser;
-  users: Array<Maybe<GQLUser>>;
+export type Query = {
+  label: Label;
+  labels: Array<Maybe<Label>>;
+  like: Like;
+  likes: Array<Maybe<Like>>;
+  task: Task;
+  tasks: Array<Maybe<Task>>;
+  user: User;
+  users: Array<Maybe<User>>;
 };
 
-export type GQLQueryLabelArgs = {
+export type QueryLabelArgs = {
   id: Scalars["ID"];
 };
 
-export type GQLQueryLikeArgs = {
+export type QueryLikeArgs = {
   id: Scalars["ID"];
 };
 
-export type GQLQueryTaskArgs = {
+export type QueryTaskArgs = {
   id: Scalars["ID"];
 };
 
-export type GQLQueryUserArgs = {
+export type QueryUserArgs = {
   id: Scalars["ID"];
 };
 
-export type GQLTask = {
+export type Task = {
   createdAt: Scalars["DateTime"];
   description: Scalars["String"];
   id: Scalars["ID"];
@@ -108,36 +98,34 @@ export type GQLTask = {
   userId: Scalars["ID"];
 };
 
-export type GQLUser = {
+export type User = {
   avatar?: Maybe<Scalars["String"]>;
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
   id: Scalars["ID"];
-  labels: Array<GQLLabel>;
+  labels: Array<Label>;
   name: Scalars["String"];
   profile: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
 
-export type GQLCreateUserMutationVariables = Exact<{
-  input: GQLCreateUserDto;
+export type CreateUserMutationVariables = Exact<{
+  input: CreateUserDto;
 }>;
 
-export type GQLCreateUserMutation = {
+export type CreateUserMutation = {
   createUser: { id: string; name: string; email: string; profile: string; avatar?: string | null };
 };
 
-export type GQLUsersQueryVariables = Exact<{ [key: string]: never }>;
+export type UsersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GQLUsersQuery = {
-  users: Array<{ id: string; name: string; profile: string; avatar?: string | null } | null>;
-};
+export type UsersQuery = { users: Array<{ id: string; name: string; profile: string; avatar?: string | null } | null> };
 
-export type GQLGetUserByIdQueryVariables = Exact<{
+export type GetUserByIdQueryVariables = Exact<{
   userId: Scalars["ID"];
 }>;
 
-export type GQLGetUserByIdQuery = { user: { id: string; name: string; profile: string; avatar?: string | null } };
+export type GetUserByIdQuery = { user: { id: string; name: string; profile: string; avatar?: string | null } };
 
 export const CreateUserDocument = `
     mutation createUser($input: CreateUserDto!) {
@@ -151,18 +139,23 @@ export const CreateUserDocument = `
 }
     `;
 export const useCreateUserMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<GQLCreateUserMutation, TError, GQLCreateUserMutationVariables, TContext>,
+  client: GraphQLClient,
+  options?: UseMutationOptions<CreateUserMutation, TError, CreateUserMutationVariables, TContext>,
+  headers?: RequestInit["headers"],
 ) =>
-  useMutation<GQLCreateUserMutation, TError, GQLCreateUserMutationVariables, TContext>(
+  useMutation<CreateUserMutation, TError, CreateUserMutationVariables, TContext>(
     ["createUser"],
-    (variables?: GQLCreateUserMutationVariables) =>
-      fetcher<GQLCreateUserMutation, GQLCreateUserMutationVariables>(CreateUserDocument, variables)(),
+    (variables?: CreateUserMutationVariables) =>
+      fetcher<CreateUserMutation, CreateUserMutationVariables>(client, CreateUserDocument, variables, headers)(),
     options,
   );
 useCreateUserMutation.getKey = () => ["createUser"];
 
-useCreateUserMutation.fetcher = (variables: GQLCreateUserMutationVariables) =>
-  fetcher<GQLCreateUserMutation, GQLCreateUserMutationVariables>(CreateUserDocument, variables);
+useCreateUserMutation.fetcher = (
+  client: GraphQLClient,
+  variables: CreateUserMutationVariables,
+  headers?: RequestInit["headers"],
+) => fetcher<CreateUserMutation, CreateUserMutationVariables>(client, CreateUserDocument, variables, headers);
 export const UsersDocument = `
     query users {
   users {
@@ -173,21 +166,23 @@ export const UsersDocument = `
   }
 }
     `;
-export const useUsersQuery = <TData = GQLUsersQuery, TError = unknown>(
-  variables?: GQLUsersQueryVariables,
-  options?: UseQueryOptions<GQLUsersQuery, TError, TData>,
+export const useUsersQuery = <TData = UsersQuery, TError = unknown>(
+  client: GraphQLClient,
+  variables?: UsersQueryVariables,
+  options?: UseQueryOptions<UsersQuery, TError, TData>,
+  headers?: RequestInit["headers"],
 ) =>
-  useQuery<GQLUsersQuery, TError, TData>(
+  useQuery<UsersQuery, TError, TData>(
     variables === undefined ? ["users"] : ["users", variables],
-    fetcher<GQLUsersQuery, GQLUsersQueryVariables>(UsersDocument, variables),
+    fetcher<UsersQuery, UsersQueryVariables>(client, UsersDocument, variables, headers),
     options,
   );
 useUsersQuery.document = UsersDocument;
 
-useUsersQuery.getKey = (variables?: GQLUsersQueryVariables) =>
+useUsersQuery.getKey = (variables?: UsersQueryVariables) =>
   variables === undefined ? ["users"] : ["users", variables];
-useUsersQuery.fetcher = (variables?: GQLUsersQueryVariables) =>
-  fetcher<GQLUsersQuery, GQLUsersQueryVariables>(UsersDocument, variables);
+useUsersQuery.fetcher = (client: GraphQLClient, variables?: UsersQueryVariables, headers?: RequestInit["headers"]) =>
+  fetcher<UsersQuery, UsersQueryVariables>(client, UsersDocument, variables, headers);
 export const GetUserByIdDocument = `
     query getUserById($userId: ID!) {
   user(id: $userId) {
@@ -198,17 +193,22 @@ export const GetUserByIdDocument = `
   }
 }
     `;
-export const useGetUserByIdQuery = <TData = GQLGetUserByIdQuery, TError = unknown>(
-  variables: GQLGetUserByIdQueryVariables,
-  options?: UseQueryOptions<GQLGetUserByIdQuery, TError, TData>,
+export const useGetUserByIdQuery = <TData = GetUserByIdQuery, TError = unknown>(
+  client: GraphQLClient,
+  variables: GetUserByIdQueryVariables,
+  options?: UseQueryOptions<GetUserByIdQuery, TError, TData>,
+  headers?: RequestInit["headers"],
 ) =>
-  useQuery<GQLGetUserByIdQuery, TError, TData>(
+  useQuery<GetUserByIdQuery, TError, TData>(
     ["getUserById", variables],
-    fetcher<GQLGetUserByIdQuery, GQLGetUserByIdQueryVariables>(GetUserByIdDocument, variables),
+    fetcher<GetUserByIdQuery, GetUserByIdQueryVariables>(client, GetUserByIdDocument, variables, headers),
     options,
   );
 useGetUserByIdQuery.document = GetUserByIdDocument;
 
-useGetUserByIdQuery.getKey = (variables: GQLGetUserByIdQueryVariables) => ["getUserById", variables];
-useGetUserByIdQuery.fetcher = (variables: GQLGetUserByIdQueryVariables) =>
-  fetcher<GQLGetUserByIdQuery, GQLGetUserByIdQueryVariables>(GetUserByIdDocument, variables);
+useGetUserByIdQuery.getKey = (variables: GetUserByIdQueryVariables) => ["getUserById", variables];
+useGetUserByIdQuery.fetcher = (
+  client: GraphQLClient,
+  variables: GetUserByIdQueryVariables,
+  headers?: RequestInit["headers"],
+) => fetcher<GetUserByIdQuery, GetUserByIdQueryVariables>(client, GetUserByIdDocument, variables, headers);
