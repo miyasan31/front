@@ -8,22 +8,16 @@ generates:
       - typescript
       - typescript-operations
       - typescript-react-query
-      - add:
-          content: "import { apiBaseUrl } from '~/constants/env';"
+      # - add:
+      #     content: "import { apiBaseUrl } from '~/constants/env';"
     config:
       skipTypename: true
       exposeDocument: true
       exposeFetcher: true
       exposeQueryKeys: true
       exposeMutationKeys: true
-      typesPrefix: GQL
-      fetcher:
-        endpoint: "apiBaseUrl"
-        # isReactHook: false
-        fetchParams:
-          headers:
-            credentials: include
-            content-type: application/json
+      fetcher: graphql-request
+
   # ./src/libs/graphql/schema.graphql:
   #   plugins:
   #     - schema-ast
