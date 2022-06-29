@@ -1,16 +1,20 @@
-import { Head } from "~/components/lib/Head";
-import { timelineService } from "~/services/timeline/timelineService";
+import { Stack } from "@mantine/core";
 
-const useGetTimeline = timelineService.useGet;
+import { Head } from "~/components/lib/Head";
+import { TaskCard } from "~/components/shared/TaskCard";
+
+import { dummyData } from "./dummyData";
 
 export const Timeline = () => {
-  const _data = useGetTimeline();
-
   return (
     <>
       <Head title="timeline page" description="timeline page" />
 
-      <div>timeline</div>
+      <Stack spacing="xs">
+        {dummyData.map((data) => (
+          <TaskCard key={data.task.id} user={data.user} task={data.task} label={data.label} />
+        ))}
+      </Stack>
     </>
   );
 };
