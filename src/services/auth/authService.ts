@@ -1,3 +1,4 @@
+import type { User as SessionUser } from "@supabase/supabase-js";
 import { useCallback, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -6,42 +7,48 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import type { IAuthService, IUseSignOut } from "~/interfaces/service/IAuthService";
 import { useCreateUserMutation, useGetUserByIdQuery } from "~/libs/graphql/service";
 import { useGQLClient } from "~/libs/graphql-request/useGQLClient";
+import { loading } from "~/libs/recoil/atom/loading";
 import { session } from "~/libs/recoil/atom/session";
 import { supabaseClient } from "~/libs/supabase/supabaseClient";
+import { sleep } from "~/utils/sleep";
 
 export const authService: IAuthService = {
   useAuth: () => {
     const queryClient = useQueryClient();
     const { createPublicGQLClient } = useGQLClient();
     const { mutateAsync } = useCreateUserMutation(createPublicGQLClient());
-    const [{ isLoading, user }, setSessionInfo] = useRecoilState(session);
+    const [{ isLoading: _ }, setIsLoading] = useRecoilState(loading);
+    const [{ user }, setSessionInfo] = useRecoilState(session);
 
     const userFetch = useCallback(async (userId: string) => {
       return await queryClient.fetchQuery(useGetUserByIdQuery.getKey({ userId }), () =>
         useGetUserByIdQuery
           .fetcher(createPublicGQLClient(), { userId })()
+          .then((data) => data)
           .catch((error) => error),
       );
     }, []);
 
     const listenSession = useCallback(async () => {
-      if (!isLoading) return;
-      if (user) return;
-
-      const sessionUser = supabaseClient.auth.session()?.user;
-      if (!sessionUser) {
-        setSessionInfo((prev) => ({ ...prev, isLoading: false }));
-        return;
+      const res = supabaseClient.auth.session()?.user;
+      if (!res) {
+        setIsLoading({ isLoading: false });
+        return null;
       }
+      return res;
+    }, []);
 
+    const userRegisterdCheck = useCallback(async (sessionUser: SessionUser) => {
       const res = await userFetch(sessionUser.id);
-
-      // TODO:バックエンドのエラーレスポンス改修検討
       if (res.user) {
-        setSessionInfo({ isLoading: false, user: res.user });
-        return;
+        setSessionInfo({ user: res.user });
+        setIsLoading({ isLoading: false });
+        return true;
       }
+      return false;
+    }, []);
 
+    const userRegister = useCallback(async (sessionUser: SessionUser) => {
       const data = await mutateAsync({
         input: {
           id: sessionUser.id,
@@ -51,33 +58,22 @@ export const authService: IAuthService = {
           profile: "プロフ初期値ダミーです",
         },
       });
-
-      await setSessionInfo({
-        isLoading: false,
-        user: {
-          id: data.createUser.id,
-          name: data.createUser.name,
-          avatar: data.createUser.avatar,
-          profile: data.createUser.email,
-        },
-      });
+      setSessionInfo({ user: data.createUser });
+      setIsLoading({ isLoading: false });
     }, []);
 
     useEffect(() => {
-      isLoading && listenSession();
+      if (user) return;
 
-      const { data: authListener } = supabaseClient.auth.onAuthStateChange(async (event, _session) => {
-        if (event === "SIGNED_IN") {
-          listenSession();
-          // setSessionInfo((prev) => ({ ...prev, isLoading: true }));
-        }
-        if (event === "SIGNED_OUT") {
-          // setSessionInfo({ isLoading: true, user: null });
-        }
-      });
-
-      return () => authListener?.unsubscribe();
-    }, [isLoading]);
+      (async () => {
+        await sleep(600);
+        const sessionUser = await listenSession();
+        if (!sessionUser) return;
+        const isRegisterd = await userRegisterdCheck(sessionUser);
+        if (isRegisterd) return;
+        await userRegister(sessionUser);
+      })();
+    }, []);
   },
   googleSignIn: (): void => {
     supabaseClient.auth.signIn({ provider: "google" }, { redirectTo: `${window.location.origin}` });
@@ -88,7 +84,7 @@ export const authService: IAuthService = {
 
     const handleSignOut = async () => {
       await supabaseClient.auth.signOut();
-      setSessionInfo({ isLoading: true, user: null });
+      setSessionInfo({ user: null });
       navigate("/");
     };
 
