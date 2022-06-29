@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 
-import { Head } from "~/components/shared/Head";
+import { Head } from "~/components/lib/Head";
 import { authService } from "~/services/auth/authService";
 
 const handleGoogleSignIn = authService.googleSignIn;

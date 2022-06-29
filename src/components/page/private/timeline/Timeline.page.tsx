@@ -1,4 +1,4 @@
-import { Head } from "~/components/shared/Head";
+import { Head } from "~/components/lib/Head";
 import { timelineService } from "~/services/timeline/timelineService";
 
 const useGetTimeline = timelineService.useGet;

@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core";
 
+import { Head } from "~/components/lib/Head";
 import { Link } from "~/components/lib/Link";
-import { Head } from "~/components/shared/Head";
 
 export const Top = () => {
   return (

@@ -1,7 +1,7 @@
 import { Button, Image, Text } from "@mantine/core";
 import { useRecoilValue } from "recoil";
 
-import { Head } from "~/components/shared/Head";
+import { Head } from "~/components/lib/Head";
 import { session } from "~/libs/recoil/atom/session";
 import { authService } from "~/services/auth/authService";
 import { userService } from "~/services/user/userService";

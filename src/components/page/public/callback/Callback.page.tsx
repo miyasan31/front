@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
-import { Head } from "~/components/shared/Head";
+import { Head } from "~/components/lib/Head";
 import { session } from "~/libs/recoil/atom/session";
 
 export const Callback = () => {

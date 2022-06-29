@@ -1,5 +1,5 @@
+import { Head } from "~/components/lib/Head";
 import { Link } from "~/components/lib/Link";
-import { Head } from "~/components/shared/Head";
 import { successButton } from "~/constants/buttonColor";
 
 export const NotFound = () => {
