@@ -15,7 +15,7 @@ type Props = {
   task: {
     title: string;
     outputMemo: string;
-    isLike: {
+    like: {
       id: string;
     } | null;
     count: {
@@ -92,7 +92,7 @@ export const TaskCard: FC<Props> = ({ user, task, label }) => {
             </Group>
 
             <Group spacing="xs">
-              <LikeButton like={task.isLike} />
+              <LikeButton like={task.like} />
               <Text>{task.count.commentCount}</Text>
             </Group>
           </Group>

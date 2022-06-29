@@ -14,7 +14,7 @@ export const dummyData = [
         likeCount: 10,
         commentCount: 5,
       },
-      isLike: {
+      like: {
         id: "like1",
       },
     },
@@ -38,7 +38,7 @@ export const dummyData = [
         likeCount: 10,
         commentCount: 5,
       },
-      isLike: null,
+      like: null,
     },
     label: [
       { id: "label1", name: "Label 1", color: "blue" as const },
@@ -60,7 +60,7 @@ export const dummyData = [
         likeCount: 10,
         commentCount: 5,
       },
-      isLike: null,
+      like: null,
     },
     label: [
       { id: "label1", name: "Label 1", color: "blue" as const },
