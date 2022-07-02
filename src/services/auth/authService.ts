@@ -66,7 +66,7 @@ export const authService: IAuthService = {
       if (user) return;
 
       (async () => {
-        await sleep(600);
+        await sleep(100);
         const sessionUser = await listenSession();
         if (!sessionUser) return;
         const isRegisterd = await userRegisterdCheck(sessionUser);
