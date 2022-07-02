@@ -67,7 +67,7 @@ export type Query = {
   likes: Array<Maybe<Like>>;
   task: Task;
   tasks: Array<Maybe<Task>>;
-  user: User;
+  user?: Maybe<User>;
   users: Array<Maybe<User>>;
 };
 
@@ -125,7 +125,7 @@ export type GetUserByIdQueryVariables = Exact<{
   userId: Scalars["ID"];
 }>;
 
-export type GetUserByIdQuery = { user: { id: string; name: string; profile: string; avatar?: string | null } };
+export type GetUserByIdQuery = { user?: { id: string; name: string; profile: string; avatar?: string | null } | null };
 
 export const CreateUserDocument = `
     mutation createUser($input: CreateUserDto!) {
