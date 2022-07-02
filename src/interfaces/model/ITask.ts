@@ -1,6 +1,9 @@
 import type { Task } from "~/libs/graphql/service";
 
-export interface ITask extends Task {}
+export interface ITask extends Task {
+  outputMemo: string;
+  likeCount: number;
+}
 
 // import type { ILabel } from "~/interfaces/model/ILabel";
 // import type { IUser } from "~/interfaces/model/IUser";
