@@ -1,3 +1,4 @@
+import type { DefaultMantineColor } from "@mantine/core";
 import { Avatar, Box, Card, Group, Spoiler, Stack, Text } from "@mantine/core";
 import type { FC } from "react";
 import { MessageCircle2 } from "tabler-icons-react";
@@ -26,7 +27,7 @@ type Props = {
   label: {
     id: string;
     name: string;
-    color: "red" | "green" | "blue" | "yellow" | "orange" | "purple";
+    color: DefaultMantineColor;
   }[];
 };
 

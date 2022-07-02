@@ -1,4 +1,4 @@
-import type { BadgeStylesNames, BadgeVariant, DefaultProps, MantineSize } from "@mantine/core";
+import type { BadgeStylesNames, BadgeVariant, DefaultMantineColor, DefaultProps, MantineSize } from "@mantine/core";
 import { Badge as MantineBadge } from "@mantine/core";
 import type { FC } from "react";
 
@@ -22,7 +22,7 @@ type CommonProps = {
   size?: MantineSize;
   variant?: BadgeVariant;
   label?: string;
-  color?: "red" | "green" | "blue" | "yellow" | "orange" | "purple";
+  color?: DefaultMantineColor;
 };
 
 type Props = CommonProps & (BadgeProps | LinkProps);
