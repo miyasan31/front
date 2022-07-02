@@ -16,7 +16,7 @@ export const SideEditor = () => {
 
   return (
     <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 300, md: 400, lg: 500 }}>
-      <Tabs active={activeTabIndex} onTabChange={handleSetActiveTabIndex}>
+      <Tabs active={activeTabIndex} onTabChange={handleSetActiveTabIndex} grow>
         <Tabs.Tab label="タスク一覧" icon={<List size={14} />}>
           <ErrorBoundary>
             <Suspense>
