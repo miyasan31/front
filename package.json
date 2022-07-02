@@ -33,6 +33,7 @@
     "@graphql-codegen/add": "^3.1.1",
     "@mantine/core": "^4.2.10",
     "@mantine/hooks": "^4.2.10",
+    "@mantine/rte": "^4.2.11",
     "@supabase/supabase-js": "^1.35.3",
     "clsx": "^1.1.1",
     "graphql": "^16.5.0",
