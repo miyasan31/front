@@ -1,6 +1,7 @@
-import { Button, Checkbox, Group, MultiSelect, Textarea, TextInput } from "@mantine/core";
+import { Button, Checkbox, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { useEffect } from "react";
+import { RichTextEditor } from "@mantine/rte";
+import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { editTaskData, myTaskList } from "~/libs/recoil/atom/taskEditor";
@@ -8,12 +9,12 @@ import { editTaskData, myTaskList } from "~/libs/recoil/atom/taskEditor";
 const TaskEdit = () => {
   const editTaskInfo = useRecoilValue(editTaskData);
   const _setIsDoneTaskInfo = useSetRecoilState(myTaskList);
+  const [outputMemoValue, handleOutputMemoChange] = useState(editTaskInfo?.outputMemo);
 
   const handleForm = useForm({
     initialValues: {
       name: "",
       description: "",
-      outputMemo: "",
       isDone: false,
       labelId: "",
     },
@@ -23,7 +24,6 @@ const TaskEdit = () => {
     handleForm.setValues({
       name: editTaskInfo?.name ?? "",
       description: editTaskInfo?.description ?? "",
-      outputMemo: editTaskInfo?.outputMemo ?? "",
       isDone: editTaskInfo?.isDone ?? false,
       labelId: editTaskInfo?.labelId ?? "",
     });
@@ -31,6 +31,7 @@ const TaskEdit = () => {
 
   const handleSubmit = (values: typeof handleForm.values) => {
     console.info(values);
+    console.info(outputMemoValue);
   };
 
   return (
@@ -40,12 +41,15 @@ const TaskEdit = () => {
 
         <TextInput label="タスクの説明" {...handleForm.getInputProps("description")} />
 
-        <Textarea
-          label="アウトプットメモ"
-          autosize
-          minRows={10}
-          maxRows={15}
-          {...handleForm.getInputProps("outputMemo")}
+        <label className="text-sm">アウトプットメモ</label>
+        <RichTextEditor
+          controls={[
+            ["bold", "italic", "underline", "link", "image"],
+            ["unorderedList", "h1", "h2", "h3"],
+            ["alignLeft", "alignCenter", "alignRight"],
+          ]}
+          value={outputMemoValue ?? ""}
+          onChange={handleOutputMemoChange}
         />
 
         <MultiSelect data={["React", "Svelte"]} label="ラベル" {...handleForm.getInputProps("labelId")} />
