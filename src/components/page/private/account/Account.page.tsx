@@ -1,17 +1,17 @@
 import { Button, Image, Text } from "@mantine/core";
-import { useRecoilValue } from "recoil";
 
 import { Head } from "~/components/lib/Head";
-import { session } from "~/libs/recoil/atom/session";
 import { authService } from "~/services/auth/authService";
+import { storeService } from "~/services/store/storeService";
 import { userService } from "~/services/user/userService";
 
-const useGetUser = userService.useGet;
-const useSignOut = authService.useSignOut;
+const { useGetUser } = userService;
+const { useSignOut } = authService;
+const { useSessionSelector } = storeService;
 
 export const Account = () => {
-  const sessionInfo = useRecoilValue(session);
-  const { data } = useGetUser(sessionInfo.user?.id ?? "");
+  const session = useSessionSelector();
+  const { data } = useGetUser(session.user?.id ?? "");
   const { handleSignOut } = useSignOut();
 
   if (!data?.user) return null;

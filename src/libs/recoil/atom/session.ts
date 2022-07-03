@@ -1,10 +1,6 @@
 import { atom } from "recoil";
 
-import type { IUser } from "~/interfaces/model/IUser";
-
-type ISession = {
-  user: Pick<IUser, "id" | "name" | "avatar" | "profile"> | null;
-};
+import type { ISession } from "~/interfaces/store/ISession";
 
 export const session = atom<ISession>({
   key: "session",

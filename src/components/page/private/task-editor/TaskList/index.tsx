@@ -6,7 +6,7 @@ import { session } from "~/libs/recoil/atom/session";
 import { editTaskData, myTaskList, taskEditorTabIndex } from "~/libs/recoil/atom/taskEditor";
 import { userService } from "~/services/user/userService";
 
-const useGetUser = userService.useGet;
+const { useGetUser } = userService;
 
 const TaskList = () => {
   const sessionInfo = useRecoilValue(session);

@@ -5,7 +5,7 @@ import { Indicator } from "~/components/shared/Indicator";
 import { loading } from "~/libs/recoil/atom/loading";
 import { authService } from "~/services/auth/authService";
 
-const useAuth = authService.useAuth;
+const { useAuth } = authService;
 
 type Props = {
   children: ReactNode;

@@ -3,7 +3,7 @@ import { useGetUserByIdQuery } from "~/libs/graphql/service";
 import { useGQLClient } from "~/libs/graphql-request/useGQLClient";
 
 export const userService: IUserService = {
-  useGet: (userId) => {
+  useGetUser: (userId) => {
     const { createPrivateGQLClient } = useGQLClient();
 
     const res = useGetUserByIdQuery(

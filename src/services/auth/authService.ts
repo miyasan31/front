@@ -2,23 +2,26 @@ import type { User as SessionUser } from "@supabase/supabase-js";
 import { useCallback, useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
 
-import type { IAuthService, IUseSignOut } from "~/interfaces/service/IAuthService";
+import type { IAuthService } from "~/interfaces/service/IAuthService";
 import { useCreateUserMutation, useGetUserByIdQuery } from "~/libs/graphql/service";
 import { useGQLClient } from "~/libs/graphql-request/useGQLClient";
-import { loading } from "~/libs/recoil/atom/loading";
-import { session } from "~/libs/recoil/atom/session";
 import { supabaseClient } from "~/libs/supabase/supabaseClient";
+import { storeService } from "~/services/store/storeService";
 import { sleep } from "~/utils/sleep";
+
+const { useLoadingSetter } = storeService;
+const { useSessionSelector, useSessionSetter } = storeService;
 
 export const authService: IAuthService = {
   useAuth: () => {
+    const session = useSessionSelector();
+    const setSession = useSessionSetter();
+    const setLoading = useLoadingSetter();
+
     const queryClient = useQueryClient();
     const { createPublicGQLClient } = useGQLClient();
     const { mutateAsync } = useCreateUserMutation(createPublicGQLClient());
-    const [{ isLoading: _ }, setIsLoading] = useRecoilState(loading);
-    const [{ user }, setSessionInfo] = useRecoilState(session);
 
     const userFetch = useCallback(async (userId: string) => {
       return await queryClient.fetchQuery(useGetUserByIdQuery.getKey({ userId }), () =>
@@ -32,7 +35,7 @@ export const authService: IAuthService = {
     const listenSession = useCallback(async () => {
       const res = supabaseClient.auth.session()?.user;
       if (!res) {
-        setIsLoading({ isLoading: false });
+        setLoading({ isLoading: false });
         return null;
       }
       return res;
@@ -41,8 +44,8 @@ export const authService: IAuthService = {
     const userRegisterdCheck = useCallback(async (sessionUser: SessionUser) => {
       const res = await userFetch(sessionUser.id);
       if (res.user) {
-        setSessionInfo({ user: res.user });
-        setIsLoading({ isLoading: false });
+        setSession({ user: res.user });
+        setLoading({ isLoading: false });
         return true;
       }
       return false;
@@ -58,12 +61,12 @@ export const authService: IAuthService = {
           profile: "プロフ初期値ダミーです",
         },
       });
-      setSessionInfo({ user: data.createUser });
-      setIsLoading({ isLoading: false });
+      setSession({ user: data.createUser });
+      setLoading({ isLoading: false });
     }, []);
 
     useEffect(() => {
-      if (user) return;
+      if (session) return;
 
       (async () => {
         await sleep(100);
@@ -78,13 +81,13 @@ export const authService: IAuthService = {
   googleSignIn: (): void => {
     supabaseClient.auth.signIn({ provider: "google" }, { redirectTo: `${window.location.origin}` });
   },
-  useSignOut: (): IUseSignOut => {
+  useSignOut: () => {
     const navigate = useNavigate();
-    const setSessionInfo = useSetRecoilState(session);
+    const setSession = useSessionSetter();
 
     const handleSignOut = async () => {
       await supabaseClient.auth.signOut();
-      setSessionInfo({ user: null });
+      setSession({ user: null });
       navigate("/");
     };
 

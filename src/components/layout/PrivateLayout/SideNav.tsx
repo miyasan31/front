@@ -1,13 +1,12 @@
 import { Avatar, createStyles, Group, Navbar, Tooltip, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import type { FC } from "react";
-import { useRecoilValue } from "recoil";
 import { BrandNotion, Home, Messages, MoonStars, Search, Settings, Sun } from "tabler-icons-react";
 
 import { Link } from "~/components/lib/Link";
 import { NavLink } from "~/components/lib/NavLink";
 import { useColorScheme } from "~/libs/mantine/hook/useColorScheme";
-import { session } from "~/libs/recoil/atom/session";
+import { storeService } from "~/services/store/storeService";
 
 const navigationTop = [
   {
@@ -118,8 +117,10 @@ const useStyles = createStyles<string, { collapsed?: boolean; type: "drawer" | "
   };
 });
 
+const { useSessionSelector } = storeService;
+
 export const SideNav: FC<{ type: "drawer" | "nav" }> = ({ type }) => {
-  const { user } = useRecoilValue(session);
+  const session = useSessionSelector();
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const [collapsed, _handlers] = useDisclosure(type === "nav");
   const { classes, cx } = useStyles({ collapsed, type });
@@ -180,7 +181,7 @@ export const SideNav: FC<{ type: "drawer" | "nav" }> = ({ type }) => {
               return cx(classes.link, isActive ? classes.linkActive : null);
             }}
           >
-            <Avatar src={user?.avatar} size="sm" />
+            <Avatar src={session.user?.avatar} size="sm" />
             <span className={classes.linkLabel}>みやさん</span>
           </NavLink>
         </UnstyledButton>
