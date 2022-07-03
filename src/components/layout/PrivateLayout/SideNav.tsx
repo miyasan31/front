@@ -181,7 +181,7 @@ export const SideNav: FC<{ type: "drawer" | "nav" }> = ({ type }) => {
               return cx(classes.link, isActive ? classes.linkActive : null);
             }}
           >
-            <Avatar src={session.user?.avatar} size="sm" />
+            <Avatar src={session?.avatar} size="sm" />
             <span className={classes.linkLabel}>みやさん</span>
           </NavLink>
         </UnstyledButton>

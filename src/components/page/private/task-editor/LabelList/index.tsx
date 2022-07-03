@@ -15,7 +15,7 @@ const LabelList = () => {
         <Badge
           key={label.id}
           type="link"
-          to={`/${sessionInfo.user?.id}/label/${label.id}/task`}
+          to={`/${sessionInfo?.id}/label/${label.id}/task`}
           size="lg"
           label={label.name}
           color={label.color}

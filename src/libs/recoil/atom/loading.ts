@@ -1,10 +1,6 @@
 import { atom } from "recoil";
 
-import type { ILoading } from "~/interfaces/store/ILoading";
-
-export const loading = atom<ILoading>({
+export const loading = atom<boolean>({
   key: "loading",
-  default: {
-    isLoading: true,
-  },
+  default: true,
 });

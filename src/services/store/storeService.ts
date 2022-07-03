@@ -1,7 +1,6 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import type { IStoreService, SetterFnc } from "~/interfaces/service/IStoreService";
-import type { ILoading } from "~/interfaces/store/ILoading";
 import type { ISession } from "~/interfaces/store/ISession";
 import { loading } from "~/libs/recoil/atom/loading";
 import { session } from "~/libs/recoil/atom/session";
@@ -25,7 +24,7 @@ const loadingStore = {
   },
   useLoadingSetter: () => {
     const setValue = useSetRecoilState(loading);
-    const setSession: SetterFnc<ILoading> = (loading, setterOption) => {
+    const setSession: SetterFnc<boolean> = (loading, setterOption) => {
       setValue(setterOption ? setterOption(loading) : loading);
     };
     return setSession;

@@ -11,7 +11,7 @@ const { useSessionSelector } = storeService;
 
 export const Account = () => {
   const session = useSessionSelector();
-  const { data } = useGetUser(session.user?.id ?? "");
+  const { data } = useGetUser(session?.id ?? "");
   const { handleSignOut } = useSignOut();
 
   if (!data?.user) return null;

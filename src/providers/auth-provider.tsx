@@ -1,10 +1,10 @@
 import type { FC, ReactNode } from "react";
-import { useRecoilValue } from "recoil";
 
 import { Indicator } from "~/components/shared/Indicator";
-import { loading } from "~/libs/recoil/atom/loading";
 import { authService } from "~/services/auth/authService";
+import { storeService } from "~/services/store/storeService";
 
+const { useLoadingSelector } = storeService;
 const { useAuth } = authService;
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   useAuth();
-  const { isLoading } = useRecoilValue(loading);
+  const isLoading = useLoadingSelector();
 
   return isLoading ? <Indicator message="認証処理中..." /> : <>{children}</>;
 };

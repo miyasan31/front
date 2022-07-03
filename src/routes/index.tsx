@@ -1,15 +1,16 @@
 import { useRoutes } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 
-import { session } from "~/libs/recoil/atom/session";
 import { commonRoutes } from "~/routes/common";
 import { privateRoutes } from "~/routes/private";
 import { publicRoutes } from "~/routes/public";
+import { storeService } from "~/services/store/storeService";
+
+const { useSessionSelector } = storeService;
 
 export const AppRoutes = () => {
-  const { user } = useRecoilValue(session);
+  const session = useSessionSelector();
 
-  const routes = user ? privateRoutes : publicRoutes;
+  const routes = session.id ? privateRoutes : publicRoutes;
   const element = useRoutes([...routes, ...commonRoutes]);
 
   return <>{element}</>;

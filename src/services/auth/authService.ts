@@ -35,7 +35,7 @@ export const authService: IAuthService = {
     const listenSession = useCallback(async () => {
       const res = supabaseClient.auth.session()?.user;
       if (!res) {
-        setLoading({ isLoading: false });
+        setLoading(false);
         return null;
       }
       return res;
@@ -44,8 +44,13 @@ export const authService: IAuthService = {
     const userRegisterdCheck = useCallback(async (sessionUser: SessionUser) => {
       const res = await userFetch(sessionUser.id);
       if (res.user) {
-        setSession({ user: res.user });
-        setLoading({ isLoading: false });
+        setSession({
+          id: res.user.id,
+          name: res.user.name,
+          avatar: res.user.avatar,
+          profile: res.user.profile,
+        });
+        setLoading(false);
         return true;
       }
       return false;
@@ -61,12 +66,17 @@ export const authService: IAuthService = {
           profile: "プロフ初期値ダミーです",
         },
       });
-      setSession({ user: data.createUser });
-      setLoading({ isLoading: false });
+      setSession({
+        id: data.createUser.id,
+        name: data.createUser.name,
+        avatar: data.createUser.avatar,
+        profile: data.createUser.profile,
+      });
+      setLoading(false);
     }, []);
 
     useEffect(() => {
-      if (session) return;
+      if (session.id) return;
 
       (async () => {
         await sleep(100);
@@ -87,7 +97,12 @@ export const authService: IAuthService = {
 
     const handleSignOut = async () => {
       await supabaseClient.auth.signOut();
-      setSession({ user: null });
+      setSession({
+        id: null,
+        name: null,
+        avatar: null,
+        profile: null,
+      });
       navigate("/");
     };
 

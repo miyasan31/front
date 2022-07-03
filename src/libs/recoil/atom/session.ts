@@ -5,6 +5,9 @@ import type { ISession } from "~/interfaces/store/ISession";
 export const session = atom<ISession>({
   key: "session",
   default: {
-    user: null,
+    id: null,
+    name: null,
+    avatar: null,
+    profile: null,
   },
 });

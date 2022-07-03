@@ -1,13 +1,14 @@
 import { Navigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 
 import { Head } from "~/components/lib/Head";
-import { session } from "~/libs/recoil/atom/session";
+import { storeService } from "~/services/store/storeService";
+
+const { useSessionSelector } = storeService;
 
 export const Callback = () => {
-  const { user } = useRecoilValue(session);
+  const session = useSessionSelector();
 
-  if (!user) {
+  if (!session.id) {
     return <Navigate to="/sign-in" />;
   }
 

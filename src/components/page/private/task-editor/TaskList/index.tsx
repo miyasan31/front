@@ -1,19 +1,20 @@
 import { Checkbox, Text, UnstyledButton } from "@mantine/core";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import type { ITask } from "~/interfaces/model/ITask";
-import { session } from "~/libs/recoil/atom/session";
 import { editTaskData, myTaskList, taskEditorTabIndex } from "~/libs/recoil/atom/taskEditor";
+import { storeService } from "~/services/store/storeService";
 import { userService } from "~/services/user/userService";
 
+const { useSessionSelector } = storeService;
 const { useGetUser } = userService;
 
 const TaskList = () => {
-  const sessionInfo = useRecoilValue(session);
+  const session = useSessionSelector();
   const setEditTaskInfo = useSetRecoilState(editTaskData);
   const handleSetActiveTabIndex = useSetRecoilState(taskEditorTabIndex);
   const [myTaskListInfo, setIsDoneTaskInfo] = useRecoilState(myTaskList);
-  const { data: _ } = useGetUser(myTaskListInfo ? sessionInfo.user?.id ?? "" : "");
+  const { data: _ } = useGetUser(myTaskListInfo ? session?.id ?? "" : "");
 
   const handleCheck = (task: ITask) => {
     setIsDoneTaskInfo((prev) => prev.map((item) => (item.id === task.id ? { ...item, isDone: !task.isDone } : item)));
