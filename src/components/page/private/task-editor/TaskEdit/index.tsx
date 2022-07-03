@@ -1,15 +1,10 @@
 import { Button, Checkbox, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { RichTextEditor } from "@mantine/rte";
-import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-
-import { editTaskData, myTaskList } from "~/libs/recoil/atom/taskEditor";
+import { useState } from "react";
 
 const TaskEdit = () => {
-  const editTaskInfo = useRecoilValue(editTaskData);
-  const _setIsDoneTaskInfo = useSetRecoilState(myTaskList);
-  const [outputMemoValue, handleOutputMemoChange] = useState(editTaskInfo?.outputMemo);
+  const [outputMemoValue, handleOutputMemoChange] = useState("");
 
   const handleForm = useForm({
     initialValues: {
@@ -20,14 +15,14 @@ const TaskEdit = () => {
     },
   });
 
-  useEffect(() => {
-    handleForm.setValues({
-      name: editTaskInfo?.name ?? "",
-      description: editTaskInfo?.description ?? "",
-      isDone: editTaskInfo?.isDone ?? false,
-      labelId: editTaskInfo?.labelId ?? "",
-    });
-  }, []);
+  // useEffect(() => {
+  //   handleForm.setValues({
+  //     name: editTaskInfo?.name ?? "",
+  //     description: editTaskInfo?.description ?? "",
+  //     isDone: editTaskInfo?.isDone ?? false,
+  //     labelId: editTaskInfo?.labelId ?? "",
+  //   });
+  // }, []);
 
   const handleSubmit = (values: typeof handleForm.values) => {
     console.info(values);

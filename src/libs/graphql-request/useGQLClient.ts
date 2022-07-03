@@ -12,7 +12,6 @@ export const useGQLClient = (): {
   createPrivateGQLClient: () => GraphQLClient;
 } => {
   // トークンを取得する
-  // const idToken = useRecoilValue(idTokenState);
   const idToken = "";
 
   const createPublicGQLClient = () => {

@@ -29,7 +29,7 @@ const dummyData = [
   },
 ];
 
-export const myTaskList = atom<ITask[] | []>({
+export const myTaskList = atom<ITask[]>({
   key: "myTaskData",
   default: dummyData,
 });
@@ -37,9 +37,4 @@ export const myTaskList = atom<ITask[] | []>({
 export const editTaskData = atom<ITask | null>({
   key: "editTaskData",
   default: null,
-});
-
-export const taskEditorTabIndex = atom<number>({
-  key: "taskEditorTabIndex",
-  default: 0,
 });
