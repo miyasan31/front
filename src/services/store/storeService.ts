@@ -33,7 +33,7 @@ const loadingStore = {
   },
 };
 
-const mtTaskListStore = {
+const myTaskListStore = {
   useMyTaskListSelector: () => {
     return useRecoilValue(myTaskList);
   },
@@ -49,5 +49,5 @@ const mtTaskListStore = {
 export const storeService: IStoreService = {
   ...sessionStore,
   ...loadingStore,
-  ...mtTaskListStore,
+  ...myTaskListStore,
 };
